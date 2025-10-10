@@ -165,3 +165,29 @@ input[type=number]{width:90px;margin-left:8px;padding:6px;border-radius:8px;bord
 .leaderboard h3{text-align:center;margin-top:0}
 .leaderboard ol{padding-left:20px}
 .leaderboard li{margin-bottom:8px}
+
+@media (max-width: 600px) {
+  .game__header {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .question-card__text {
+    font-size: 1.5rem;
+  }
+
+  .question-card__option {
+    font-size: 1.1rem;
+    padding: 12px;
+  }
+
+  .lifeline {
+    padding: 10px;
+    font-size: 0.9rem;
+  }
+
+  .game__actions {
+    flex-direction: column;
+    gap: 10px;
+  }
+}
