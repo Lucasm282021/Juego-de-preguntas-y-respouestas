@@ -58,10 +58,10 @@ body{
 .score-panel__item{background:rgba(255,255,255,0.03);padding:8px 12px;border-radius:8px;border:1px solid rgba(255,255,255,0.02);font-weight:600}
 
 .question-card{margin-top:6px}
-.question-card__text{font-size:1.15rem;color:var(--color-text-light);margin:0}
+.question-card__text{font-size:2.15rem;color:var(--color-text-light);margin:0}
 
 .question-card__options{display:grid;grid-template-columns:1fr;gap:12px;margin-top:14px}
-.question-card__option{padding:14px;border-radius:10px;border:1px solid rgba(255,255,255,0.03);cursor:pointer;background:linear-gradient(180deg, rgba(0,0,0,0.15), rgba(255,255,255,0.02));transition:transform .12s ease, box-shadow .12s ease}
+.question-card__option{padding:14px;border-radius:10px;border:1px solid rgba(255,255,255,0.03);cursor:pointer;background:linear-gradient(180deg, rgba(0,0,0,0.15), rgba(255,255,255,0.02));transition:transform .12s ease, box-shadow .12s ease;font-size: 1.3rem;}
 .question-card__option:hover{transform:translateY(-3px);box-shadow:var(--shadow-md)}
 .question-card__option--correct{border-color:rgba(0,255,170,0.8);background:linear-gradient(90deg, rgba(0,255,170,0.06), rgba(0,240,255,0.02));color:var(--color-text-light)}
 .question-card__option--wrong{border-color:var(--color-error);background:linear-gradient(90deg, rgba(255,59,59,0.04), rgba(255,59,59,0.02));color:var(--color-text-light)}
@@ -76,12 +76,13 @@ body{
     display: flex;
     align-items: center;
     gap: 8px;
-    padding: 10px 14px;
+    padding: 12px 18px;
     border-radius: 10px;
     border: 1px solid rgba(255,255,255,0.04);
     background: rgba(255, 255, 255, 0.05);
     color: var(--color-text-light);
     font-weight: 600;
+    font-size: 1.1rem;
     cursor: pointer;
     transition: transform .12s ease, box-shadow .12s ease;
 }
@@ -110,15 +111,17 @@ input[type=number]{width:90px;margin-left:8px;padding:6px;border-radius:8px;bord
 .question-list{margin-top:12px}
 .question-list__item{padding:8px;border-bottom:1px solid rgba(255,255,255,0.02);font-size:14px;color:rgba(255,255,255,0.8)}
 
-@media(max-width:900px){.container{flex-direction:column;padding:12px}}
+@media(max-width:900px){
+  .container{flex-direction:column;padding:12px}
+}
 
 /* pequeños estilos extra */
-.btn-primary{background:linear-gradient(90deg,var(--color-accent-primary),var(--color-accent-secondary));border:none;color:#051018;padding:14px 28px;border-radius:10px;cursor:pointer;font-size: 1.1rem; font-weight: bold; width: 100%;}
+.btn-primary{background:linear-gradient(90deg,var(--color-accent-primary),var(--color-accent-secondary));border:none;color:#051018;padding:16px 32px;border-radius:10px;cursor:pointer;font-size: 1.2rem; font-weight: bold; width: 100%;}
 .btn-primary:hover{transform:scale(1.03)}
 /* Ajuste para el botón "Siguiente" para que no ocupe todo el ancho */
 .game__actions .btn-primary {
     width: auto;
-    padding: 10px 20px;
+    padding: 14px 28px;
 }
 .btn-ghost{background:transparent;border:1px solid rgba(255,255,255,0.04);padding:8px 10px;border-radius:8px;color:var(--color-text-light);cursor:pointer}
 .btn-ghost:hover{background:rgba(255,255,255,0.05);border-color:rgba(255,255,255,0.1)}

@@ -18,6 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const switchCount = document.getElementById('switch-count');
     const eliminateCount = document.getElementById('eliminate-count');
     const timerFill = document.getElementById('timer-fill');
+    const questionCounterSpan = document.getElementById('question-counter');
 
     // Game State
     const gameState = {
@@ -82,6 +83,7 @@ document.addEventListener('DOMContentLoaded', () => {
         doubleCount.textContent = gameState.lifelines.double;
         switchCount.textContent = gameState.lifelines.switch;
         eliminateCount.textContent = gameState.lifelines.eliminate;
+        if (questionCounterSpan) questionCounterSpan.textContent = `0/${cfg.maxQuestionsPerGame}`;
 
         nextBtn.textContent = 'Siguiente';
         messageDiv.textContent = '';
@@ -94,6 +96,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function startGame() {
         const name = prompt('Por favor, ingresa tu nombre:', 'Jugador');
+
+        if (name && name.toLowerCase() === 'admin') {
+            const password = prompt('Por favor, ingresa la contraseña de administrador:');
+            if (password === '31381993') {
+                alert('Acceso concedido. Redirigiendo al panel de administrador...');
+                window.location.href = 'admin/index.html';
+            } else {
+                alert('Contraseña incorrecta.');
+            }
+            return; // Stop the function here whether password is correct or not
+        }
+
         gameState.playerName = name || 'Jugador';
         gameState.gameStartTime = Date.now();
         startScreen.classList.add('hidden');
@@ -116,6 +130,7 @@ document.addEventListener('DOMContentLoaded', () => {
         gameState.askedIndices.add(idx);
         gameState.currentIndex = idx;
         gameState.questionsAskedCount++;
+        if (questionCounterSpan) questionCounterSpan.textContent = `${gameState.questionsAskedCount}/${cfg.maxQuestionsPerGame}`;
         showQuestion(questions[idx]);
     }
 
