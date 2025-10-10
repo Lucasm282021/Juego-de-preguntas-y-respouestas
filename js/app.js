@@ -32,6 +32,7 @@ document.addEventListener('DOMContentLoaded', () => {
         timeLeft: 0,
         playerName: '',
         gameStartTime: 0,
+        isGameOver: false,
     };
 
     let cfg = {};
@@ -67,6 +68,7 @@ document.addEventListener('DOMContentLoaded', () => {
         gameState.errorsCount = 0;
         gameState.correctAnswersCount = 0;
         gameState.playerName = '';
+        gameState.isGameOver = false;
 
         gameState.lifelines = {
             double: cfg.doubleStart,
@@ -80,6 +82,7 @@ document.addEventListener('DOMContentLoaded', () => {
         switchCount.textContent = gameState.lifelines.switch;
         eliminateCount.textContent = gameState.lifelines.eliminate;
 
+        nextBtn.textContent = 'Siguiente';
         messageDiv.textContent = '';
         stopTimer();
         if (timerFill) timerFill.style.width = '100%';
@@ -186,9 +189,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
         messageDiv.innerHTML = `${finalMessage}`;
         Array.from(optionsDiv.children).forEach(ch => ch.style.pointerEvents = 'none');
+        gameState.isGameOver = true;
         nextBtn.textContent = 'Jugar de Nuevo';
-        nextBtn.removeEventListener('click', nextQuestionHandler);
-        nextBtn.addEventListener('click', resetToStart);
         nextBtn.classList.remove('hidden');
     }
 
@@ -222,6 +224,10 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function nextQuestionHandler() {
+        if (gameState.isGameOver) {
+            resetToStart();
+            return;
+        }
         messageDiv.textContent = '';
         messageDiv.classList.remove('game__message--correct', 'game__message--wrong', 'game__message--timeout');
         pickRandomQuestion();
