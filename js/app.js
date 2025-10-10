@@ -20,6 +20,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const timerFill = document.getElementById('timer-fill');
     const questionCounterSpan = document.getElementById('question-counter');
 
+    // Admin Login Elements
+    const adminLogin = document.getElementById('admin-login');
+    const adminPasswordInput = document.getElementById('admin-password-input');
+    const adminLoginBtn = document.getElementById('admin-login-btn');
+    const startScreenActions = document.querySelector('.start-screen__actions');
+
     // Game State
     const gameState = {
         score: 0,
@@ -57,10 +63,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 localStorage.setItem('quiz_config', JSON.stringify(cfg));
             } catch (error) {
                 console.error('Could not load default config:', error);
-                // Handle error, maybe show a message to the user
             }
         }
         questions = cfg.questions || [];
+    }
+
+    function showStartScreenActions() {
+        adminLogin.style.display = 'none';
+        startScreenActions.style.display = 'flex';
+        adminPasswordInput.value = '';
     }
 
     function resetToStart() {
@@ -92,35 +103,41 @@ document.addEventListener('DOMContentLoaded', () => {
         gameScreen.classList.add('hidden');
         startScreen.classList.remove('hidden');
         nextBtn.classList.add('hidden');
+
+        // Reset admin login form
+        showStartScreenActions();
     }
 
     function startGame() {
         const name = prompt('Por favor, ingresa tu nombre:', 'Jugador');
 
-        // Si el usuario hace clic en "Cancelar", el prompt devuelve nulo.
         if (name === null) {
-            return; // Permanece en la pantalla de inicio
-        }
-
-        if (name.toLowerCase() === 'admin') {
-            const password = prompt('Por favor, ingresa la contraseña de administrador:');
-            if (password === '31381993') {
-                alert('Acceso concedido. Redirigiendo al panel de administrador...');
-                window.location.href = 'admin/index.html';
-            } else {
-                // Solo muestra la alerta si el usuario no canceló el prompt de la contraseña
-                if (password !== null) {
-                    alert('Contraseña incorrecta.');
-                }
-            }
             return;
         }
 
-        gameState.playerName = name || 'Jugador'; // Maneja el caso de un string vacío
+        if (name.toLowerCase() === 'admin') {
+            startScreenActions.style.display = 'none';
+            adminLogin.style.display = 'flex';
+            adminPasswordInput.focus();
+            return;
+        }
+
+        gameState.playerName = name || 'Jugador';
         gameState.gameStartTime = Date.now();
         startScreen.classList.add('hidden');
         gameScreen.classList.remove('hidden');
         pickRandomQuestion();
+    }
+
+    function handleAdminLogin() {
+        const password = adminPasswordInput.value;
+        if (password === '31381993') {
+            alert('Acceso concedido. Redirigiendo al panel de administrador...');
+            window.location.href = 'admin/index.html';
+        } else {
+            alert('Contraseña incorrecta.');
+            showStartScreenActions();
+        }
     }
 
     function pickRandomQuestion() {
@@ -264,23 +281,18 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function performSwitchQuestion() {
-        // Remove the current question from the asked set, so it can appear again
         gameState.askedIndices.delete(gameState.currentIndex);
 
-        // Find a new, unasked question
         let idx;
         do {
             idx = Math.floor(Math.random() * questions.length);
         } while (gameState.askedIndices.has(idx));
 
-        // Set the new question
         gameState.askedIndices.add(idx);
         gameState.currentIndex = idx;
         
-        // Reset double points lifeline for the new question
         gameState.usedDoubleForThis = false;
 
-        // Show the new question without incrementing the total count
         showQuestion(questions[idx]);
     }
 
@@ -288,6 +300,20 @@ document.addEventListener('DOMContentLoaded', () => {
         startBtn.addEventListener('click', startGame);
         leaderboardBtn.addEventListener('click', toggleLeaderboard);
         nextBtn.addEventListener('click', nextQuestionHandler);
+
+        // Admin Login Events
+        adminLoginBtn.addEventListener('click', handleAdminLogin);
+        adminPasswordInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                handleAdminLogin();
+            }
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && adminLogin.style.display === 'flex') {
+                showStartScreenActions();
+            }
+        });
 
         doubleBtn.addEventListener('click', () => {
             if (gameState.lifelines.double > 0 && !gameState.usedDoubleForThis) {

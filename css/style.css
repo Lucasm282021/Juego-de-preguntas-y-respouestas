@@ -139,6 +139,23 @@ input[type=number]{width:90px;margin-left:8px;padding:6px;border-radius:8px;bord
     margin-top: 12px;
 }
 
+#admin-login {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-top: 16px;
+}
+
+#admin-password-input {
+    width: 100%;
+    padding: 0.8rem;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    background: rgba(0, 0, 0, 0.2);
+    color: var(--color-text-light);
+    font-size: 1.1rem;
+}
+
 /* Timer */
 .timer{height:10px;background:rgba(255,255,255,0.03);border-radius:8px;margin-top:12px;overflow:hidden;border:1px solid rgba(255,255,255,0.02)}
 .timer__fill{height:100%;width:100%;background:linear-gradient(90deg,var(--color-accent-primary),var(--color-accent-secondary));transform-origin:left;transition:width 0.2s linear}

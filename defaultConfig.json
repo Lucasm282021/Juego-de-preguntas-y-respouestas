@@ -1,11 +1,12 @@
 {
     "pointsPerQuestion": 2,
     "pointsToWin": 10,
-    "doubleStart": 2,
+    "doubleStart": 1,
     "switchStart": 1,
+    "eliminateStart": 1,
     "timePerQuestion": 15,
     "maxErrorsAllowed": 3,
-    "maxQuestionsPerGame": 10,
+    "maxQuestionsPerGame": 5,
     "questions": [
         {
             "id": 1,
