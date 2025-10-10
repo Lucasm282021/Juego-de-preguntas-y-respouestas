@@ -10,7 +10,7 @@
     <main class="container">
         <h1>Panel de Administración</h1>
 
-        <section class="card">
+        <section id="config-card" class="card">
             <h2>Configuración del Juego</h2>
             <form id="config-form">
                 <div class="form-group">
@@ -30,6 +30,10 @@
                     <input type="number" id="switch-start" value="1">
                 </div>
                 <div class="form-group">
+                    <label for="eliminate-start">Comodines "50:50" iniciales</label>
+                    <input type="number" id="eliminate-start" value="1">
+                </div>
+                <div class="form-group">
                     <label for="time-per-question">Tiempo por pregunta (segundos)</label>
                     <input type="number" id="time-per-question" value="15">
                 </div>
@@ -41,14 +45,10 @@
                     <label for="max-questions">Máximas preguntas por juego</label>
                     <input type="number" id="max-questions" value="10">
                 </div>
-                <div class="form-actions">
-                    <button type="submit" class="btn-primary">Guardar Configuración</button>
-                    <a href="../index.html" class="btn-secondary">Ir al Juego</a>
-                </div>
             </form>
         </section>
 
-        <section class="card">
+        <section id="questions-card" class="card">
             <h2>Gestión de Preguntas</h2>
             <div id="question-list"></div>
             <form id="add-question-form">
@@ -68,6 +68,17 @@
                 <button type="submit" class="btn-primary">Añadir Pregunta</button>
             </form>
         </section>
+
+        <section id="actions-card" class="card">
+            <h2>Acciones del Sitio</h2>
+            <div class="form-actions">
+                <button id="save-config-btn" class="btn-primary">Guardar Configuración</button>
+                <a href="../index.html" class="btn-secondary">Ir al Juego</a>
+                <button id="delete-ranking-btn" class="btn-danger">Borrar Ranking</button>
+                <button id="restore-config-btn" class="btn-warning">Restaurar Configuración</button>
+            </div>
+        </section>
+
     </main>
 
     <script src="admin.js"></script>

@@ -75,7 +75,7 @@ document.addEventListener('DOMContentLoaded', () => {
         gameState.lifelines = {
             double: cfg.doubleStart,
             switch: cfg.switchStart,
-            eliminate: 1,
+            eliminate: cfg.eliminateStart,
         };
 
         scoreSpan.textContent = gameState.score;
@@ -97,18 +97,26 @@ document.addEventListener('DOMContentLoaded', () => {
     function startGame() {
         const name = prompt('Por favor, ingresa tu nombre:', 'Jugador');
 
-        if (name && name.toLowerCase() === 'admin') {
+        // Si el usuario hace clic en "Cancelar", el prompt devuelve nulo.
+        if (name === null) {
+            return; // Permanece en la pantalla de inicio
+        }
+
+        if (name.toLowerCase() === 'admin') {
             const password = prompt('Por favor, ingresa la contraseña de administrador:');
             if (password === '31381993') {
                 alert('Acceso concedido. Redirigiendo al panel de administrador...');
                 window.location.href = 'admin/index.html';
             } else {
-                alert('Contraseña incorrecta.');
+                // Solo muestra la alerta si el usuario no canceló el prompt de la contraseña
+                if (password !== null) {
+                    alert('Contraseña incorrecta.');
+                }
             }
-            return; // Stop the function here whether password is correct or not
+            return;
         }
 
-        gameState.playerName = name || 'Jugador';
+        gameState.playerName = name || 'Jugador'; // Maneja el caso de un string vacío
         gameState.gameStartTime = Date.now();
         startScreen.classList.add('hidden');
         gameScreen.classList.remove('hidden');
