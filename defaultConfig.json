@@ -1,0 +1,311 @@
+{
+    "pointsPerQuestion": 2,
+    "pointsToWin": 10,
+    "doubleStart": 2,
+    "switchStart": 1,
+    "timePerQuestion": 15,
+    "maxErrorsAllowed": 3,
+    "maxQuestionsPerGame": 10,
+    "questions": [
+        {
+            "id": 1,
+            "text": "¿Cuál es una buena práctica para crear contraseñas seguras?",
+            "options": [
+                "Usar tu fecha de nacimiento",
+                "Usar palabras comunes",
+                "Combinar letras, números y símbolos"
+            ],
+            "answer": 2
+        },
+        {
+            "id": 2,
+            "text": "¿Cada cuánto tiempo deberías cambiar tus contraseñas?",
+            "options": [
+                "Nunca",
+                "Cada 6 meses o menos",
+                "Solo si olvidas la contraseña"
+            ],
+            "answer": 1
+        },
+        {
+            "id": 3,
+            "text": "¿Es recomendable usar la misma contraseña en diferentes servicios?",
+            "options": [
+                "Sí, para recordarlas fácilmente",
+                "No, cada servicio debe tener una contraseña única",
+                "Solo si es una contraseña muy segura"
+            ],
+            "answer": 1
+        },
+        {
+            "id": 4,
+            "text": "¿Qué es la autenticación en dos pasos?",
+            "options": [
+                "Un tipo de contraseña doble",
+                "Un método que requiere dos formas de verificación",
+                "Un sistema de respaldo"
+            ],
+            "answer": 1
+        },
+        {
+            "id": 5,
+            "text": "¿Por qué es importante actualizar el software regularmente?",
+            "options": [
+                "Para tener nuevas funciones",
+                "Para evitar que se vuelva lento",
+                "Para corregir vulnerabilidades de seguridad"
+            ],
+            "answer": 2
+        },
+        {
+            "id": 6,
+            "text": "¿Qué tipo de redes Wi-Fi deberías evitar?",
+            "options": [
+                "Las que no requieren contraseña",
+                "Las de tu casa",
+                "Las que tienen nombre largo"
+            ],
+            "answer": 0
+        },
+        {
+            "id": 7,
+            "text": "¿Qué significa cifrar tus datos?",
+            "options": [
+                "Guardarlos en la nube",
+                "Protegerlos con contraseña",
+                "Convertirlos en un formato ilegible sin clave"
+            ],
+            "answer": 2
+        },
+        {
+            "id": 8,
+            "text": "¿Qué es un firewall?",
+            "options": [
+                "Un antivirus",
+                "Un sistema que bloquea accesos no autorizados",
+                "Un tipo de malware"
+            ],
+            "answer": 1
+        },
+        {
+            "id": 9,
+            "text": "¿Qué debes hacer si pierdes tu dispositivo móvil?",
+            "options": [
+                "Esperar a que alguien lo devuelva",
+                "Bloquearlo y cambiar tus contraseñas",
+                "Publicarlo en redes sociales"
+            ],
+            "answer": 1
+        },
+        {
+            "id": 10,
+            "text": "¿Es seguro guardar contraseñas en el navegador?",
+            "options": [
+                "Sí, siempre",
+                "No, es mejor usar un gestor de contraseñas",
+                "Solo si el navegador es confiable"
+            ],
+            "answer": 1
+        },
+        {
+            "id": 11,
+            "text": "¿Qué es el phishing?",
+            "options": [
+                "Un sistema de respaldo",
+                "Un ataque que busca robar información personal mediante engaños",
+                "Un tipo de antivirus"
+            ],
+            "answer": 1
+        },
+        {
+            "id": 12,
+            "text": "¿Cómo identificar un correo electrónico fraudulento?",
+            "options": [
+                "Tiene errores ortográficos y urgencia",
+                "Viene de tu jefe",
+                "Tiene un logo official"
+            ],
+            "answer": 0
+        },
+        {
+            "id": 13,
+            "text": "¿Qué es un malware?",
+            "options": [
+                "Un tipo de hardware",
+                "Un software malicioso",
+                "Un sistema operativo"
+            ],
+            "answer": 1
+        },
+        {
+            "id": 14,
+            "text": "¿Qué es un ransomware?",
+            "options": [
+                "Un virus que borra tus archivos",
+                "Un software que secuestra tus datos y pide rescate",
+                "Un programa de respaldo"
+            ],
+            "answer": 1
+        },
+        {
+            "id": 15,
+            "text": "¿Qué señales indican que tu equipo podría estar infectado?",
+            "options": [
+                "Lentitud, ventanas emergentes, comportamiento extraño",
+                "Mayor velocidad",
+                "Silencio total del sistema"
+            ],
+            "answer": 0
+        },
+        {
+            "id": 16,
+            "text": "¿Qué es un ataque de ingeniería social?",
+            "options": [
+                "Un ataque físico",
+                "Manipulación psicológica para obtener información",
+                "Un error técnico"
+            ],
+            "answer": 1
+        },
+        {
+            "id": 17,
+            "text": "¿Qué es el spoofing?",
+            "options": [
+                "Suplantación de identidad digital",
+                "Un tipo de firewall",
+                "Un sistema de respaldo"
+            ],
+            "answer": 0
+        },
+        {
+            "id": 18,
+            "text": "¿Qué tipo de archivos adjuntos pueden ser peligrosos?",
+            "options": [
+                ".exe, .zip, .scr",
+                ".txt",
+                ".jpg"
+            ],
+            "answer": 0
+        },
+        {
+            "id": 19,
+            "text": "¿Qué es un keylogger?",
+            "options": [
+                "Un programa que registra tus pulsaciones de teclado",
+                "Un antivirus",
+                "Un sistema de respaldo"
+            ],
+            "answer": 0
+        },
+        {
+            "id": 20,
+            "text": "¿Qué es el pharming?",
+            "options": [
+                "Redireccionar a sitios falsos sin que el usuario lo note",
+                "Cultivar datos",
+                "Un tipo de phishing físico"
+            ],
+            "answer": 0
+        },
+        {
+            "id": 21,
+            "text": "¿Es seguro compartir información personal en redes sociales?",
+            "options": [
+                "Sí, si tienes pocos seguidores",
+                "No, puede ser usada en tu contra",
+                "Solo si es tu nombre"
+            ],
+            "answer": 1
+        },
+        {
+            "id": 22,
+            "text": "¿Qué precauciones debes tomar al descargar archivos de internet?",
+            "options": [
+                "Verificar la fuente y escanear con antivirus",
+                "Descargar todo lo que parezca útil",
+                "Usar redes públicas"
+            ],
+            "answer": 0
+        },
+        {
+            "id": 23,
+            "text": "¿Qué es una VPN y cuándo deberías usarla?",
+            "options": [
+                "Una red privada para navegar seguro",
+                "Un tipo de navegador",
+                "Un antivirus"
+            ],
+            "answer": 0
+        },
+        {
+            "id": 24,
+            "text": "¿Qué tipo de sitios web son más vulnerables a ataques?",
+            "options": [
+                "Sitios sin HTTPS",
+                "Sitios gubernamentales",
+                "Sitios con muchos colores"
+            ],
+            "answer": 0
+        },
+        {
+            "id": 25,
+            "text": "¿Qué debes hacer si recibes un mensaje sospechoso por WhatsApp?",
+            "options": [
+                "Reenviarlo",
+                "No abrirlo y reportarlo",
+                "Responder para confirmar"
+            ],
+            "answer": 1
+        },
+        {
+            "id": 26,
+            "text": "¿Es seguro hacer clic en enlaces acortados?",
+            "options": [
+                "Sí, siempre",
+                "No, pueden ocultar destinos maliciosos",
+                "Solo si son de amigos"
+            ],
+            "answer": 1
+        },
+        {
+            "id": 27,
+            "text": "¿Qué información nunca deberías compartir por correo electrónico?",
+            "options": [
+                "Tu nombre",
+                "Contraseñas y datos bancarios",
+                "Opiniones personales"
+            ],
+            "answer": 1
+        },
+        {
+            "id": 28,
+            "text": "¿Qué es el robo de identidad digital?",
+            "options": [
+                "Usar tu nombre en redes",
+                "Acceder y usar tus datos personales sin permiso",
+                "Crear un perfil falso"
+            ],
+            "answer": 1
+        },
+        {
+            "id": 29,
+            "text": "¿Qué debes revisar antes de instalar una aplicación?",
+            "options": [
+                "Opiniones y permisos solicitados",
+                "El ícono",
+                "Si es gratuita"
+            ],
+            "answer": 0
+        },
+        {
+            "id": 30,
+            "text": "¿Qué hacer si crees que tu cuenta ha sido comprometida?",
+            "options": [
+                "Ignorar el problema",
+                "Cambiar la contraseña y activar autenticación en dos pasos",
+                "Borrar la cuenta"
+            ],
+            "answer": 1
+        }
+    ]
+}

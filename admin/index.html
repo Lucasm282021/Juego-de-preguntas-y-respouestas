@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Admin - Juego de Preguntas</title>
+    <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+    <main class="container">
+        <h1>Panel de Administración</h1>
+
+        <section class="card">
+            <h2>Configuración del Juego</h2>
+            <form id="config-form">
+                <div class="form-group">
+                    <label for="points-per-question">Puntos por pregunta</label>
+                    <input type="number" id="points-per-question" value="2">
+                </div>
+                <div class="form-group">
+                    <label for="points-to-win">Puntos para ganar</label>
+                    <input type="number" id="points-to-win" value="10">
+                </div>
+                <div class="form-group">
+                    <label for="double-start">Comodines "Duplicar" iniciales</label>
+                    <input type="number" id="double-start" value="2">
+                </div>
+                <div class="form-group">
+                    <label for="switch-start">Comodines "Cambiar" iniciales</label>
+                    <input type="number" id="switch-start" value="1">
+                </div>
+                <div class="form-group">
+                    <label for="time-per-question">Tiempo por pregunta (segundos)</label>
+                    <input type="number" id="time-per-question" value="15">
+                </div>
+                 <div class="form-group">
+                    <label for="max-errors">Máximos errores permitidos</label>
+                    <input type="number" id="max-errors" value="3">
+                </div>
+                <div class="form-group">
+                    <label for="max-questions">Máximas preguntas por juego</label>
+                    <input type="number" id="max-questions" value="10">
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn-primary">Guardar Configuración</button>
+                    <a href="../index.html" class="btn-secondary">Ir al Juego</a>
+                </div>
+            </form>
+        </section>
+
+        <section class="card">
+            <h2>Gestión de Preguntas</h2>
+            <div id="question-list"></div>
+            <form id="add-question-form">
+                <h3>Añadir Nueva Pregunta</h3>
+                <div class="form-group">
+                    <label for="question-text">Texto de la pregunta</label>
+                    <input type="text" id="question-text" required>
+                </div>
+                <div class="form-group">
+                    <label for="question-options">Opciones (separadas por comas)</label>
+                    <input type="text" id="question-options" required>
+                </div>
+                <div class="form-group">
+                    <label for="question-answer">Índice de la respuesta correcta (empezando en 0)</label>
+                    <input type="number" id="question-answer" required>
+                </div>
+                <button type="submit" class="btn-primary">Añadir Pregunta</button>
+            </form>
+        </section>
+    </main>
+
+    <script src="admin.js"></script>
+</body>
+</html>

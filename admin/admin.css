@@ -1,0 +1,124 @@
+:root {
+    --color-bg-dark: #1a1a2e;
+    --color-bg-light: #2a2a3e;
+    --color-accent-primary: #00aaff;
+    --color-text-light: #e2e8f0;
+    --color-text-dark: #1a202c;
+    --color-border: rgba(255, 255, 255, 0.1);
+    --radius-md: 8px;
+    --gap-md: 1.5rem;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: 'Segoe UI', 'Roboto', Arial, sans-serif;
+    font-size: 1rem;
+    color: var(--color-text-light);
+    background-color: var(--color-bg-dark);
+    padding: var(--gap-md);
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap-md);
+}
+
+h1 {
+    color: var(--color-accent-primary);
+}
+
+.card {
+    background-color: var(--color-bg-light);
+    padding: var(--gap-md);
+    border-radius: var(--radius-md);
+    border: 1px solid var(--color-border);
+}
+
+.form-group {
+    margin-bottom: 1rem;
+}
+
+.form-actions {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
+label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+}
+
+input[type="text"],
+input[type="number"] {
+    width: 100%;
+    padding: 0.75rem;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--color-border);
+    background-color: var(--color-bg-dark);
+    color: var(--color-text-light);
+    font-size: 1rem;
+}
+
+.btn-primary {
+    background-color: var(--color-accent-primary);
+    border: none;
+    color: var(--color-text-dark);
+    padding: 0.75rem 1.5rem;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: bold;
+    transition: background-color 0.2s ease;
+}
+
+.btn-primary:hover {
+    background-color: #0088cc;
+}
+
+.btn-secondary {
+    background-color: transparent;
+    border: 1px solid var(--color-accent-primary);
+    color: var(--color-accent-primary);
+    padding: 0.75rem 1.5rem;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: bold;
+    text-decoration: none;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.btn-secondary:hover {
+    background-color: var(--color-accent-primary);
+    color: var(--color-text-dark);
+}
+
+#question-list .question-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem;
+    border-bottom: 1px solid var(--color-border);
+}
+
+#question-list .question-item:last-child {
+    border-bottom: none;
+}
+
+#question-list .question-item button {
+    background-color: #ff4d4d;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+}
