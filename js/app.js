@@ -23,6 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const gameState = {
         score: 0,
         currentIndex: null,
+        currentCorrectIndex: null,
         usedDoubleForThis: false,
         askedIndices: new Set(),
         questionsAskedCount: 0,
@@ -121,7 +122,12 @@ document.addEventListener('DOMContentLoaded', () => {
     function showQuestion(q) {
         qText.textContent = q.text;
         optionsDiv.innerHTML = '';
-        q.options.forEach((opt, i) => {
+
+        const correctAnswerText = q.options[q.answer];
+        const shuffledOptions = [...q.options].sort(() => Math.random() - 0.5);
+        gameState.currentCorrectIndex = shuffledOptions.indexOf(correctAnswerText);
+
+        shuffledOptions.forEach((opt, i) => {
             const b = document.createElement('div');
             b.className = 'question-card__option';
             b.textContent = opt;
@@ -139,7 +145,7 @@ document.addEventListener('DOMContentLoaded', () => {
         stopTimer();
         messageDiv.classList.remove('game__message--correct', 'game__message--wrong', 'game__message--timeout');
 
-        if (chosen === q.answer) {
+        if (chosen === gameState.currentCorrectIndex) {
             e.currentTarget.classList.add('question-card__option--correct');
             const earned = gameState.usedDoubleForThis ? cfg.pointsPerQuestion * 2 : cfg.pointsPerQuestion;
             gameState.score += earned;
@@ -149,7 +155,7 @@ document.addEventListener('DOMContentLoaded', () => {
             messageDiv.classList.add('game__message--correct');
         } else {
             e.currentTarget.classList.add('question-card__option--wrong');
-            const correctEl = Array.from(optionsDiv.children).find(ch => parseInt(ch.dataset.index, 10) === q.answer);
+            const correctEl = Array.from(optionsDiv.children).find(ch => parseInt(ch.dataset.index, 10) === gameState.currentCorrectIndex);
             if (correctEl) correctEl.classList.add('question-card__option--correct');
             messageDiv.textContent = `Respuesta incorrecta. La respuesta correcta era: "${q.options[q.answer]}"`;
             gameState.errorsCount++;
@@ -234,6 +240,27 @@ document.addEventListener('DOMContentLoaded', () => {
         nextBtn.classList.add('hidden');
     }
 
+    function performSwitchQuestion() {
+        // Remove the current question from the asked set, so it can appear again
+        gameState.askedIndices.delete(gameState.currentIndex);
+
+        // Find a new, unasked question
+        let idx;
+        do {
+            idx = Math.floor(Math.random() * questions.length);
+        } while (gameState.askedIndices.has(idx));
+
+        // Set the new question
+        gameState.askedIndices.add(idx);
+        gameState.currentIndex = idx;
+        
+        // Reset double points lifeline for the new question
+        gameState.usedDoubleForThis = false;
+
+        // Show the new question without incrementing the total count
+        showQuestion(questions[idx]);
+    }
+
     function attachEvents() {
         startBtn.addEventListener('click', startGame);
         leaderboardBtn.addEventListener('click', toggleLeaderboard);
@@ -254,15 +281,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 gameState.lifelines.switch--;
                 switchCount.textContent = gameState.lifelines.switch;
                 messageDiv.textContent = 'Pregunta cambiada.';
-                pickRandomQuestion();
+                performSwitchQuestion();
                 if (gameState.lifelines.switch <= 0) switchBtn.classList.add('lifeline--disabled');
             }
         });
 
         eliminateBtn.addEventListener('click', () => {
             if (gameState.lifelines.eliminate > 0) {
-                const q = questions[gameState.currentIndex];
-                const incorrectOptions = Array.from(optionsDiv.children).filter(opt => parseInt(opt.dataset.index, 10) !== q.answer);
+                const incorrectOptions = Array.from(optionsDiv.children).filter(opt => parseInt(opt.dataset.index, 10) !== gameState.currentCorrectIndex);
                 if (incorrectOptions.length > 1) {
                     const toRemove = incorrectOptions[Math.floor(Math.random() * incorrectOptions.length)];
                     toRemove.style.visibility = 'hidden';
