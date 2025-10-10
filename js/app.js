@@ -19,6 +19,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const eliminateCount = document.getElementById('eliminate-count');
     const timerFill = document.getElementById('timer-fill');
     const questionCounterSpan = document.getElementById('question-counter');
+    const timerSound = new Audio('sound/timer-ticks-314055.mp3');
+    const errorSound = new Audio('sound/error-170796.mp3');
+    const correctSound = new Audio('sound/sonido-correcto-331225.mp3');
 
     // Admin Login Elements
     const adminLogin = document.getElementById('admin-login');
@@ -193,6 +196,7 @@ document.addEventListener('DOMContentLoaded', () => {
             messageDiv.textContent = `¡Correcto! Ganaste ${earned} puntos.`;
             gameState.correctAnswersCount++;
             messageDiv.classList.add('game__message--correct');
+            correctSound.play();
         } else {
             e.currentTarget.classList.add('question-card__option--wrong');
             const correctEl = Array.from(optionsDiv.children).find(ch => parseInt(ch.dataset.index, 10) === gameState.currentCorrectIndex);
@@ -200,6 +204,7 @@ document.addEventListener('DOMContentLoaded', () => {
             messageDiv.textContent = `Respuesta incorrecta. La respuesta correcta era: "${q.options[q.answer]}"`;
             gameState.errorsCount++;
             messageDiv.classList.add('game__message--wrong');
+            errorSound.play();
         }
 
         if (!checkWin()) {
@@ -354,6 +359,8 @@ document.addEventListener('DOMContentLoaded', () => {
         stopTimer();
         gameState.timeLeft = cfg.timePerQuestion;
         updateTimerFill();
+        timerSound.loop = true;
+        timerSound.play();
         gameState.timer = setInterval(() => {
             gameState.timeLeft -= 0.1;
             updateTimerFill();
@@ -366,6 +373,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function stopTimer() {
         clearInterval(gameState.timer);
+        timerSound.pause();
+        timerSound.currentTime = 0;
     }
 
     function updateTimerFill() {

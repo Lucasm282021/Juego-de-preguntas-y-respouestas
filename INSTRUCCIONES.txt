@@ -1,0 +1,5 @@
+He generado un favicon para el juego. Por favor, descarga el favicon desde la siguiente URL y guárdalo como `favicon.ico` en la raíz de tu proyecto:
+
+https://favicon.io/favicon-from-emoji?emoji=🤔
+
+Una vez que hayas guardado el archivo, avísame y añadiré el código necesario a los archivos HTML.

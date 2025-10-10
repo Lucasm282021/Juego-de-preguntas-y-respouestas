@@ -3,28 +3,29 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>Juego de Preguntas</title>
+    <title>PREGUNTADOS</title>
     <link rel="stylesheet" href="css/style.css">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
 </head>
 <body>
     <main class="container">
         <!-- Pantalla de inicio -->
         <section id="start-screen" class="start-screen card">
-            <h2 class="start-screen__title">Bienvenidos al Juego de Preguntas y Respuestas</h2>
+            <h2 class="start-screen__title">PREGUNTADOS</h2>
             <div class="start-screen__actions">
-                <button id="start-btn" class="btn-primary">Play</button>
+                <button id="start-btn" class="btn-primary">Jugar</button>
                 <button id="leaderboard-btn" class="btn-primary">Tabla de Jugadores</button>
             </div>
             <div id="admin-login" class="hidden" style="display: none;">
                 <input type="password" id="admin-password-input" placeholder="Contraseña de administrador">
-                <button id="admin-login-btn" class="btn-primary">Login</button>
+                <button id="admin-login-btn" class="btn-primary">Ingresar</button>
             </div>
             <div id="leaderboard-display" class="leaderboard hidden"></div>
         </section>
 
         <section id="game" class="game hidden">
         <header class="game__header">
-            <h1 class="game__title">Juego de Preguntas</h1>
+            <h1 class="game__title">PREGUNTADOS</h1>
             <div class="score-panel">
                 <div class="score-panel__item">Puntos: <span id="score" class="score-panel__value">0</span></div>
                 <div class="score-panel__item">Meta: <span id="target" class="score-panel__value">10</span></div>
