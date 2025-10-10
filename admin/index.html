@@ -43,13 +43,13 @@
                 </div>
                 <div class="form-group">
                     <label for="max-questions">Máximas preguntas por juego</label>
-                    <input type="number" id="max-questions" value="10">
+                    <input type="number" id="max-questions" value="5">
                 </div>
             </form>
         </section>
 
         <section id="questions-card" class="card">
-            <h2>Gestión de Preguntas</h2>
+            <h2>Gestión de Preguntas <span id="question-count">(0)</span></h2>
             <div id="question-list"></div>
             <form id="add-question-form">
                 <h3>Añadir Nueva Pregunta</h3>
@@ -72,10 +72,10 @@
         <section id="actions-card" class="card">
             <h2>Acciones del Sitio</h2>
             <div class="form-actions">
-                <button id="save-config-btn" class="btn-primary">Guardar Configuración</button>
                 <a href="../index.html" class="btn-secondary">Ir al Juego</a>
-                <button id="delete-ranking-btn" class="btn-danger">Borrar Ranking</button>
+                <button id="save-config-btn" class="btn-primary">Guardar Configuración</button>
                 <button id="restore-config-btn" class="btn-warning">Restaurar Configuración</button>
+                <button id="delete-ranking-btn" class="btn-danger">Borrar Ranking</button>
             </div>
         </section>
 

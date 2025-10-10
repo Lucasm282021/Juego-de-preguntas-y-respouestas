@@ -73,6 +73,11 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- Lógica de Preguntas ---
     function renderQuestions() {
         questionListDiv.innerHTML = '';
+        const questionCount = document.getElementById('question-count');
+        if (questionCount) {
+            questionCount.textContent = `(${config.questions ? config.questions.length : 0})`;
+        }
+
         if (!config.questions || config.questions.length === 0) {
             questionListDiv.innerHTML = '<p>No hay preguntas definidas.</p>';
             return;
