@@ -1,5 +1,37 @@
-He generado un favicon para el juego. Por favor, descarga el favicon desde la siguiente URL y guárdalo como `favicon.ico` en la raíz de tu proyecto:
+### ¡Bienvenido a PREGUNTADOS!
 
-https://favicon.io/favicon-from-emoji?emoji=🤔
+Aquí tienes todo lo que necesitas saber para jugar y convertirte en un campeón.
 
-Una vez que hayas guardado el archivo, avísame y añadiré el código necesario a los archivos HTML.
+---
+
+### Objetivo del Juego
+
+El objetivo es simple: acumula la cantidad de puntos requerida (la "Meta") antes de que se acaben las preguntas o cometas demasiados errores.
+---
+### ¿Cómo se juega?
+
+[LIST_START]
+*   **Inicio:** En la pantalla principal, haz clic en "Jugar" e ingresa tu nombre.
+*   **Responde:** Se te presentará una pregunta con varias opciones. Haz clic en la que creas que es la correcta. ¡Pero cuidado, el tiempo corre!
+*   **Puntuación:** Cada respuesta **correcta** te suma puntos. Cada respuesta **incorrecta** o si se te acaba el **tiempo**, se cuenta como un error.
+*   **Ganar o Perder:** Ganas si alcanzas la puntuación meta. Pierdes si superas el límite de errores permitidos.
+[LIST_END]
+
+---
+
+### Comodines (Tus ayudas)
+
+Durante el juego, tendrás acceso a comodines que puedes usar una vez por partida para ayudarte:
+[LIST_START]
+*   **X2 (Duplicar Puntos):** Actívalo antes de responder. Si aciertas, ¡ganarás el doble de puntos por esa pregunta!
+*   **50:50 (Eliminar Opción):** Elimina una de las respuestas incorrectas, aumentando tus probabilidades de acertar.
+*   **⇄ (Cambiar Pregunta):** ¿No te gusta la pregunta actual? Usa este comodín para cambiarla por una completamente nueva.
+[LIST_END]
+
+---
+
+### Tabla de Jugadores
+
+Al final de cada partida, tu puntuación se guardará automáticamente. Puedes ver los mejores puntajes de todos los tiempos haciendo clic en el botón "Tabla de Jugadores" en la pantalla de inicio.
+
+¡Mucha suerte y que gane el mejor!

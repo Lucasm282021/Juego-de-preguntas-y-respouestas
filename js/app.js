@@ -31,6 +31,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const adminPasswordInput = document.getElementById('admin-password-input');
     const adminLoginBtn = document.getElementById('admin-login-btn');
     const startScreenActions = document.querySelector('.start-screen__actions');
+
+    // Instructions Elements
+    const instructionsBtn = document.getElementById('instructions-btn');
+    const instructionsDialog = document.getElementById('instructions-dialog');
+    const closeInstructionsBtn = document.getElementById('close-instructions-btn');
     
     // Game State
     const gameState = {        score: 0,
@@ -297,6 +302,13 @@ document.addEventListener('DOMContentLoaded', () => {
             lifelinesUsed: { ...gameState.usedLifelines },
             history: gameState.history
         };
+
+        // Guardar la puntuación en el leaderboard
+        saveScore({
+            name: result.name,
+            score: result.score,
+            time: result.totalTime
+        });
         try {
             localStorage.setItem('quiz_result', JSON.stringify(result));
         } catch (e) {
@@ -378,6 +390,37 @@ document.addEventListener('DOMContentLoaded', () => {
         try { localStorage.setItem('quiz_mute', String(isMuted)); } catch (e) {}
     }
     
+    async function showInstructions() {
+        leaderboardDisplay.classList.add('hidden'); // Ocultar leaderboard si está abierto
+        instructionsDialog.showModal();
+        const instructionsTextDiv = document.getElementById('instructions-text');
+
+        try {
+            const response = await fetch('INSTRUCCIONES.txt');
+            if (!response.ok) {
+                throw new Error('No se pudo cargar el archivo de instrucciones.');
+            }
+            const text = await response.text();
+            
+            // Convertir el texto plano a un HTML simple
+            const html = text.split('\n').map(line => line.trim()).filter(line => line)
+                .join('\n') // Re-join with single newlines
+                .replace(/### (.*)/g, '<h3>$1</h3>')
+                .replace(/---/g, '<hr>')
+                .replace(/\[LIST_START\]\n((?:\* .+\n?)+)\[LIST_END\]/g, (match, listItems) => {
+                    return `<ul>${listItems.replace(/\* (.*)/g, '<li>$1</li>')}</ul>`;
+                }).replace(/\n/g, '<br>');
+
+            instructionsTextDiv.innerHTML = html;
+        } catch (error) {
+            instructionsTextDiv.textContent = 'No se pudieron cargar las instrucciones. Por favor, intenta de nuevo más tarde.';
+            console.error('Error al cargar instrucciones:', error);
+        }
+    }
+
+    function hideInstructions() {
+        instructionsDialog.close();
+    }
     function attachEvents() {
         startBtn.addEventListener('click', startGame);
         leaderboardBtn.addEventListener('click', toggleLeaderboard);
@@ -433,6 +476,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             }
         });
+
+        // Instructions events
+        instructionsBtn.addEventListener('click', showInstructions);
+        closeInstructionsBtn.addEventListener('click', hideInstructions);
     }
 
     function startTimer() {

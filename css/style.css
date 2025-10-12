@@ -126,6 +126,10 @@ input[type=number]{width:100px;margin-left:1rem;padding:0.5rem;border-radius:var
     width: auto;
     padding: 1rem 2rem;
 }
+.btn-secondary { background: transparent; border: 1px solid var(--color-accent-primary); color: var(--color-accent-primary); padding: 1rem 2rem; border-radius: var(--radius-md); cursor: pointer; font-size: 1.2rem; font-weight: bold; width: 100%; transition: background-color 0.2s ease, color 0.2s ease; }
+.btn-secondary:hover { background-color: var(--color-accent-primary); color: var(--color-bg-dark); }
+
+
 .btn-ghost{background:transparent;border:1px solid rgba(255,255,255,0.1);padding:0.8rem 1.2rem;border-radius:var(--radius-md);color:var(--color-text-light);cursor:pointer; transition: background-color 0.2s ease, border-color 0.2s ease;}
 .btn-ghost:hover{background:rgba(255,255,255,0.1);border-color:rgba(255,255,255,0.2)}
 
@@ -213,6 +217,48 @@ input:checked + .slider::after {
 .leaderboard h3{text-align:center;margin-top:0; color: var(--color-accent-secondary);}
 .leaderboard ol{padding-left:1.5rem}
 .leaderboard li{margin-bottom:0.8rem; font-size: 1.1rem;}
+
+/* Dialog (Modal) Styles */
+dialog {
+    max-width: 900px;
+    width: calc(100% - 2rem);
+    border: none;
+    padding: 0; /* El padding lo hereda de .card */
+    max-height: 85vh;
+    overflow-y: auto;
+}
+dialog::backdrop {
+    background-color: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(4px);
+}
+dialog h2 {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    color: var(--color-accent-primary);
+    font-size: 2rem;
+    font-weight: bold;
+    text-shadow: 0 0 10px rgba(0, 240, 255, 0.5); 
+    /* El color se hereda del body */
+}
+dialog h3 { color: var(--color-accent-secondary); margin-top: 2rem; margin-bottom: 0.75rem; }
+dialog hr { border-color: rgba(255, 255, 255, 0.1); }
+
+#instructions-text {
+    line-height: 1.7;
+    font-size: 1.3rem;
+    color: #ffff;
+    background-color: rgba(255, 255, 255, 0.2);
+    padding: 1.5rem;
+    border-radius: var(--radius-md);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+#instructions-text li {
+    margin-bottom: 0.5rem;
+}
+.close-btn {
+    position: absolute; top: 10px; right: 20px; background: none; border: none;
+    color: var(--color-text-light); font-size: 2.5rem; cursor: pointer; line-height: 1;
+}
 
 @media (max-width: 600px) {
   body { padding: 1rem; }

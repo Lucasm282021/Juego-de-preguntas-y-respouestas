@@ -22,6 +22,7 @@
             <div class="start-screen__actions">
                 <button id="start-btn" class="btn-primary">Jugar</button>
                 <button id="leaderboard-btn" class="btn-primary">Tabla de Jugadores</button>
+                <button id="instructions-btn" class="btn-secondary">Instrucciones</button>
             </div>
             <div id="admin-login" class="hidden" style="display: none;">
                 <input type="password" id="admin-password-input" placeholder="Contraseña de administrador">
@@ -29,18 +30,24 @@
             </div>
             <div id="leaderboard-display" class="leaderboard hidden"></div>
         </section>
+        
+        <!-- Modal de Instrucciones con <dialog> -->
+        <dialog id="instructions-dialog" class="card">
+            <button id="close-instructions-btn" class="close-btn">&times;</button>
+            <h2>Cómo Jugar</h2>
+            <div id="instructions-text">Cargando...</div>
+        </dialog>
 
         <section id="game" class="game hidden">
-        <header class="game__header">
-            <h1 class="game__title">PREGUNTADOS</h1>
-            <div class="score-panel">
-                <div class="score-panel__item">Puntos: <span id="score" class="score-panel__value">0</span></div>
-                <div class="score-panel__item">Meta: <span id="target" class="score-panel__value">10</span></div>
-                <div class="score-panel__item">Errores: <span id="errors" class="score-panel__value">0</span></div>
-                <div class="score-panel__item">Pregunta: <span id="question-counter" class="score-panel__value">0/0</span></div>
-            </div>
-        </header>
-
+            <header class="game__header">
+                <h1 class="game__title">PREGUNTADOS</h1>
+                <div class="score-panel">
+                    <div class="score-panel__item">Puntos: <span id="score" class="score-panel__value">0</span></div>
+                    <div class="score-panel__item">Meta: <span id="target" class="score-panel__value">10</span></div>
+                    <div class="score-panel__item">Errores: <span id="errors" class="score-panel__value">0</span></div>
+                    <div class="score-panel__item">Pregunta: <span id="question-counter" class="score-panel__value">0/0</span></div>
+                </div>
+            </header>
         <div id="question-area" class="question-card card">
             <p id="question-text" class="question-card__text">Cargando pregunta...</p>
             <div id="options" class="question-card__options"></div>
