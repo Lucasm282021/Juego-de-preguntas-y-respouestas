@@ -206,6 +206,7 @@ document.addEventListener('DOMContentLoaded', () => {
         gameState.currentCorrectIndex = shuffledOptions.indexOf(correctAnswerText);
 
         shuffledOptions.forEach((opt, i) => {
+            // Habilitar los comodines para la nueva pregunta
             const b = document.createElement('button');
             b.className = 'question-card__option';
             b.textContent = opt;
@@ -213,12 +214,14 @@ document.addEventListener('DOMContentLoaded', () => {
             b.addEventListener('click', onChoose);
             optionsDiv.appendChild(b);
         });
+        setLifelinesState(true); // Habilitar comodines para la nueva pregunta
         startTimer();
     }
 
     function onChoose(e) {
         const chosen = parseInt(e.currentTarget.dataset.index, 10);
         const q = questions[gameState.currentIndex];
+        setLifelinesState(false); // Deshabilitar comodines al responder
         Array.from(optionsDiv.children).forEach(ch => ch.style.pointerEvents = 'none');
         stopTimer();
         messageDiv.classList.remove('game__message--correct', 'game__message--wrong', 'game__message--timeout');
@@ -402,6 +405,21 @@ document.addEventListener('DOMContentLoaded', () => {
         try { localStorage.setItem('quiz_mute', String(isMuted)); } catch (e) {}
     }
 
+    function setLifelinesState(enabled) {
+        const lifelineButtons = [doubleBtn, switchBtn, eliminateBtn];
+        lifelineButtons.forEach(btn => {
+            if (enabled) {
+                // Al habilitar, solo quitamos la clase temporal 'inactive'
+                // La clase 'disabled' (por falta de usos) permanece si ya estaba
+                btn.classList.remove('lifeline--inactive');
+            } else {
+                // Al deshabilitar, añadimos la clase temporal 'inactive'
+                btn.classList.add('lifeline--inactive');
+            }
+        });
+    }
+
+
     function toggleTexture() {
         document.body.classList.toggle('texture-active');
         const isTextureActive = document.body.classList.contains('texture-active');
@@ -540,6 +558,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function onTimeOut() {
         Array.from(optionsDiv.children).forEach(ch => ch.style.pointerEvents = 'none');
+        setLifelinesState(false); // Deshabilitar comodines si se acaba el tiempo
             gameState.errorsCount++;
             if (errorsSpan) errorsSpan.textContent = gameState.errorsCount;
         messageDiv.textContent = 'Tiempo agotado. Se marcó como fallo. 😟';

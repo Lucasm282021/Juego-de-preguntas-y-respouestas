@@ -120,6 +120,11 @@ body.texture-active {
     cursor: not-allowed;
     pointer-events: none;
 }
+.lifeline--inactive {
+    opacity: 0.4;
+    cursor: not-allowed;
+    pointer-events: none;
+}
 .lifeline__icon { font-size: 1.2rem; color: var(--color-accent-primary); }
 
 .game__message{margin-top:1.5rem;color:var(--color-text-light);min-height:2rem; font-size: 1.2rem; text-align: center;}
