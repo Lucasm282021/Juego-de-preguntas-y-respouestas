@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>PREGUNTADOS</title>
     <link rel="stylesheet" href="css/style.css">
-    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <link rel="icon" href="img/Logo-del-click-a-la-conciencia.png" type="image/png">
 </head>
 <body>
     <main class="container">
@@ -29,7 +29,8 @@
                 <button id="instructions-btn" class="btn-secondary">Instrucciones</button>
             </div>
             <div id="admin-login" class="hidden" style="display: none;">
-                <input type="password" id="admin-password-input" placeholder="Contraseña de administrador">
+                <label for="admin-password-input" class="sr-only">Contraseña de administrador</label>
+                <input type="password" id="admin-password-input" placeholder="Contraseña de administrador" aria-label="Contraseña de administrador">
                 <button id="admin-login-btn" class="btn-primary">Ingresar</button>
             </div>
             <div id="leaderboard-display" class="leaderboard hidden"></div>

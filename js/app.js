@@ -206,7 +206,7 @@ document.addEventListener('DOMContentLoaded', () => {
         gameState.currentCorrectIndex = shuffledOptions.indexOf(correctAnswerText);
 
         shuffledOptions.forEach((opt, i) => {
-            const b = document.createElement('div');
+            const b = document.createElement('button');
             b.className = 'question-card__option';
             b.textContent = opt;
             b.dataset.index = i;
