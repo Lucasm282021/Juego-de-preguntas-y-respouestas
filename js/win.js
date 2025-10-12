@@ -1,50 +1,7 @@
-(function(){
-    const resultRaw = localStorage.getItem('quiz_result');
-    // Borrar el resultado inmediatamente después de leerlo para evitar que se muestre de nuevo al recargar.
-    try { localStorage.removeItem('quiz_result'); } catch (e) {}
+// Llama a la función compartida para mostrar los resultados
+displayResults();
 
-    if (!resultRaw) {
-        // Si no hay datos (porque la página fue recargada), no mostrar nada.
-        document.querySelector('main').innerHTML = '<h1>Resultado no disponible</h1><p>Serás redirigido al inicio.</p>';
-        setTimeout(() => { window.location.href = 'index.html'; }, 2500);
-        document.getElementById('message').textContent = 'No se encontró información del juego.';
-        return;
-    }
-    const res = JSON.parse(resultRaw);
-    document.getElementById('name').textContent = res.name || 'Jugador';
-    document.getElementById('score').textContent = res.score ?? 0;
-    document.getElementById('time').textContent = (res.totalTime != null) ? (res.totalTime + 's') : '-';
-    document.getElementById('corrects').textContent = res.correctAnswers ?? 0;
-    document.getElementById('errors').textContent = res.errors ?? 0;
-    const lif = res.lifelinesUsed || {};
-    const lifelineNames = {
-        double: 'X2',
-        switch: 'Cambio de pregunta',
-        eliminate: '50:50'
-    };
-
-    const usedLifelinesText = Object.keys(lif)
-        .filter(key => lif[key])
-        .map(key => lifelineNames[key] || key)
-        .join(', ');
-    document.getElementById('lifelines').textContent = usedLifelinesText || 'Ninguno';
-
-    const listEl = document.getElementById('history-list');
-    if (Array.isArray(res.history) && res.history.length) {
-        res.history.forEach((h, i) => {
-            const div = document.createElement('div');
-            div.className = 'q ' + (h.correct ? 'correct' : 'wrong');
-            div.innerHTML = `<strong>Q${i+1}:</strong> ${h.text} <br>
-              Tu respuesta: <em>${h.chosenText}</em> ${h.correct ? '<span style="color:var(--color-accent-primary)">✔</span>' : '<span style="color:var(--color-error)">✖</span>'} <br>
-              Respuesta correcta: <em>${h.correctText}</em> <br>
-              Tiempo: ${h.timeTaken}s ${h.usedDouble ? ' | Duplicador usado' : ''}
-            `;
-            listEl.appendChild(div);
-        });
-    } else {
-        listEl.innerHTML = '<p>No hay historial de preguntas.</p>';
-    }
-
+(function() {
     const audio = document.getElementById('win-audio');
     // reproducir respetando la preferencia de mute guardada en start page (si existe)
     try {
