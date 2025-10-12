@@ -11,6 +11,7 @@ Este es un juego de preguntas y respuestas interactivo, desarrollado completamen
 - **Ranking de Jugadores:** Guarda y muestra las mejores puntuaciones, ordenadas por múltiples criterios (puntos, tiempo, errores, comodines usados).
 - **Panel de Administración:** Una interfaz para configurar las reglas del juego (puntos, tiempo, etc.) y gestionar las preguntas.
 - **Persistencia de Datos:** Utiliza `localStorage` para guardar la configuración del juego y el ranking de jugadores.
+- **Personalización de Interfaz:** Incluye opciones para silenciar el sonido y activar/desactivar una textura de fondo.
 - **Diseño Responsivo:** La interfaz se adapta a diferentes tamaños de pantalla.
 
 ---

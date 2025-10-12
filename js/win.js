@@ -1,6 +1,12 @@
 (function(){
     const resultRaw = localStorage.getItem('quiz_result');
+    // Borrar el resultado inmediatamente después de leerlo para evitar que se muestre de nuevo al recargar.
+    try { localStorage.removeItem('quiz_result'); } catch (e) {}
+
     if (!resultRaw) {
+        // Si no hay datos (porque la página fue recargada), no mostrar nada.
+        document.querySelector('main').innerHTML = '<h1>Resultado no disponible</h1><p>Serás redirigido al inicio.</p>';
+        setTimeout(() => { window.location.href = 'index.html'; }, 2500);
         document.getElementById('message').textContent = 'No se encontró información del juego.';
         return;
     }
@@ -93,7 +99,6 @@
 
     document.getElementById('back-btn').addEventListener('click', () => {
         // limpiar el resultado y volver al inicio
-        try { localStorage.removeItem('quiz_result'); } catch (e) {}
         window.location.href = 'index.html';
     });
 })();
