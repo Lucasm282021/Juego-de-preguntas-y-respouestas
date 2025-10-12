@@ -103,7 +103,8 @@ document.addEventListener('DOMContentLoaded', () => {
         gameState.playerName = '';
         gameState.isGameOver = false;
 
-        gameState.lifelines = {
+        // Contadores de comodines disponibles
+        gameState.lifelineCounts = {
             double: cfg.doubleStart,
             switch: cfg.switchStart,
             eliminate: cfg.eliminateStart,
@@ -112,9 +113,9 @@ document.addEventListener('DOMContentLoaded', () => {
         scoreSpan.textContent = gameState.score;
         targetSpan.textContent = cfg.pointsToWin;
         if (errorsSpan) errorsSpan.textContent = gameState.errorsCount;
-        doubleCount.textContent = gameState.lifelines.double;
-        switchCount.textContent = gameState.lifelines.switch;
-        eliminateCount.textContent = gameState.lifelines.eliminate;
+        doubleCount.textContent = gameState.lifelineCounts.double;
+        switchCount.textContent = gameState.lifelineCounts.switch;
+        eliminateCount.textContent = gameState.lifelineCounts.eliminate;
         if (questionCounterSpan) questionCounterSpan.textContent = `0/${cfg.maxQuestionsPerGame}`;
 
     // reset history and lifeline usage
@@ -305,11 +306,14 @@ document.addEventListener('DOMContentLoaded', () => {
             history: gameState.history
         };
 
+        const lifelinesUsedCount = Object.values(gameState.usedLifelines).filter(Boolean).length;
         // Guardar la puntuación en el leaderboard
         saveScore({
             name: result.name,
             score: result.score,
-            time: result.totalTime
+            time: result.totalTime,
+            errors: gameState.errorsCount,
+            lifelines: lifelinesUsedCount
         });
         try {
             localStorage.setItem('quiz_result', JSON.stringify(result));
@@ -330,7 +334,13 @@ document.addEventListener('DOMContentLoaded', () => {
     function saveScore(playerData) {
         const leaderboard = JSON.parse(localStorage.getItem('quiz_leaderboard') || '[]');
         leaderboard.push(playerData);
-        leaderboard.sort((a, b) => b.score - a.score || a.time - a.time);
+        // Lógica de ordenamiento:
+        // 1. Mayor puntuación primero.
+        // 2. Menor tiempo primero (en caso de empate en puntos).
+        // 3. Menor cantidad de errores primero (en caso de empate en puntos y tiempo).
+        // 4. Menor cantidad de comodines usados primero (en caso de empate en todo lo anterior).
+        leaderboard.sort((a, b) => 
+            b.score - a.score || a.time - b.time || a.errors - b.errors || a.lifelines - b.lifelines);
         const topScores = leaderboard.slice(0, 10);
         localStorage.setItem('quiz_leaderboard', JSON.stringify(topScores));
     }
@@ -348,7 +358,7 @@ document.addEventListener('DOMContentLoaded', () => {
         } else {
             html += '<ol>';
             leaderboard.slice(0, 3).forEach(entry => {
-                html += `<li>${entry.name} - ${entry.score} pts (${entry.time}s)</li>`;
+                html += `<li>${entry.name} - ${entry.score} pts (${entry.time}s, ${entry.errors ?? 0} errores, ${entry.lifelines ?? 0} comodines)</li>`;
             });
             html += '</ol>';
         }
@@ -460,38 +470,38 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         doubleBtn.addEventListener('click', () => {
-            if (gameState.lifelines.double > 0 && !gameState.usedDoubleForThis) {
-                gameState.lifelines.double--;
-                doubleCount.textContent = gameState.lifelines.double;
+            if (gameState.lifelineCounts.double > 0 && !gameState.usedDoubleForThis) {
+                gameState.lifelineCounts.double--;
+                doubleCount.textContent = gameState.lifelineCounts.double;
                 gameState.usedDoubleForThis = true;
                 gameState.usedLifelines.double = true;
                 messageDiv.textContent = 'Duplicador activado para esta pregunta.';
-                if (gameState.lifelines.double <= 0) doubleBtn.classList.add('lifeline--disabled');
+                if (gameState.lifelineCounts.double <= 0) doubleBtn.classList.add('lifeline--disabled');
             }
         });
 
         switchBtn.addEventListener('click', () => {
-            if (gameState.lifelines.switch > 0) {
-                gameState.lifelines.switch--;
-                switchCount.textContent = gameState.lifelines.switch;
+            if (gameState.lifelineCounts.switch > 0) {
+                gameState.lifelineCounts.switch--;
+                switchCount.textContent = gameState.lifelineCounts.switch;
                 gameState.usedLifelines.switch = true;
                 messageDiv.textContent = 'Pregunta cambiada.';
                 performSwitchQuestion();
-                if (gameState.lifelines.switch <= 0) switchBtn.classList.add('lifeline--disabled');
+                if (gameState.lifelineCounts.switch <= 0) switchBtn.classList.add('lifeline--disabled');
             }
         });
 
         eliminateBtn.addEventListener('click', () => {
-            if (gameState.lifelines.eliminate > 0) {
+            if (gameState.lifelineCounts.eliminate > 0) {
                 const incorrectOptions = Array.from(optionsDiv.children).filter(opt => parseInt(opt.dataset.index, 10) !== gameState.currentCorrectIndex);
                 if (incorrectOptions.length > 1) {
                     const toRemove = incorrectOptions[Math.floor(Math.random() * incorrectOptions.length)];
                     toRemove.style.visibility = 'hidden';
-                    gameState.lifelines.eliminate--;
-                    eliminateCount.textContent = gameState.lifelines.eliminate;
+                    gameState.lifelineCounts.eliminate--;
+                    eliminateCount.textContent = gameState.lifelineCounts.eliminate;
                     gameState.usedLifelines.eliminate = true;
                     messageDiv.textContent = 'Se eliminó una opción incorrecta.';
-                    if (gameState.lifelines.eliminate <= 0) eliminateBtn.classList.add('lifeline--disabled');
+                    if (gameState.lifelineCounts.eliminate <= 0) eliminateBtn.classList.add('lifeline--disabled');
                 }
             }
         });
