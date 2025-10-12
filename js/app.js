@@ -183,11 +183,22 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         let idx;
+        const recentlyAsked = getRecentlyAsked();
+        let attempts = 0;
+        const maxAttempts = questions.length * 2; // Límite para evitar bucles infinitos
+
         do {
             idx = Math.floor(Math.random() * questions.length);
-        } while (gameState.askedIndices.has(idx));
+            attempts++;
+            // Si hemos intentado muchas veces y no encontramos una pregunta "nueva",
+            // ignoramos la lista de "recientes" para evitar un bucle infinito.
+            if (attempts > maxAttempts) {
+                break;
+            }
+        } while (gameState.askedIndices.has(idx) || recentlyAsked.includes(idx));
 
         gameState.askedIndices.add(idx);
+        updateRecentlyAsked(idx);
         gameState.currentIndex = idx;
         gameState.questionsAskedCount++;
         if (questionCounterSpan) questionCounterSpan.textContent = `${gameState.questionsAskedCount}/${cfg.maxQuestionsPerGame}`;
@@ -403,6 +414,26 @@ document.addEventListener('DOMContentLoaded', () => {
         correctSound.muted = isMuted;
         winSound.muted = isMuted;
         try { localStorage.setItem('quiz_mute', String(isMuted)); } catch (e) {}
+    }
+
+    // --- Lógica de "Preguntas Recientes" para mejorar la aleatoriedad entre partidas ---
+    const RECENTLY_ASKED_BUFFER_SIZE = 15; // Recordar las últimas 15 preguntas
+
+    function getRecentlyAsked() {
+        try {
+            return JSON.parse(localStorage.getItem('quiz_recent_questions') || '[]');
+        } catch (e) {
+            return [];
+        }
+    }
+
+    function updateRecentlyAsked(questionIndex) {
+        let recent = getRecentlyAsked();
+        recent.push(questionIndex);
+        if (recent.length > RECENTLY_ASKED_BUFFER_SIZE) {
+            recent.shift(); // Elimina la pregunta más antigua de la lista
+        }
+        localStorage.setItem('quiz_recent_questions', JSON.stringify(recent));
     }
 
     function setLifelinesState(enabled) {
