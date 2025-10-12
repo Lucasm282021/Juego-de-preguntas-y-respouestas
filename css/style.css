@@ -31,6 +31,9 @@ body{
   -webkit-font-smoothing:antialiased;
   -moz-osx-font-smoothing:grayscale;
   padding:2rem;
+}
+
+body.texture-active {
   background-image: url('https://www.transparenttextures.com/patterns/stardust.png');
 }
 
@@ -133,6 +136,24 @@ input[type=number]{width:100px;margin-left:1rem;padding:0.5rem;border-radius:var
 }
 .btn-secondary { background: transparent; border: 1px solid var(--color-accent-primary); color: var(--color-accent-primary); padding: 1rem 2rem; border-radius: var(--radius-md); cursor: pointer; font-size: 1.2rem; font-weight: bold; width: 100%; transition: background-color 0.2s ease, color 0.2s ease; }
 .btn-secondary:hover { background-color: var(--color-accent-primary); color: var(--color-bg-dark); }
+
+.btn-icon {
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: var(--color-accent-primary);
+    border-radius: 50%;
+    width: 34px;
+    height: 34px;
+    padding: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+.btn-icon:hover { background-color: rgba(0, 240, 255, 0.1); border-color: var(--color-accent-primary); }
+
+body.texture-active #toggle-texture-btn {
+    border-color: rgba(255, 255, 255, 0.8);
+    box-shadow: 0 0 12px rgba(255, 255, 255, 0.6);
+}
 
 
 .btn-ghost{background:transparent;border:1px solid rgba(255,255,255,0.1);padding:0.8rem 1.2rem;border-radius:var(--radius-md);color:var(--color-text-light);cursor:pointer; transition: background-color 0.2s ease, border-color 0.2s ease;}

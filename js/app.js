@@ -26,6 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const winSound = new Audio('sound/applause-cheer-236786.mp3');
     const muteBtn = document.getElementById('mute-btn');
     
+    const toggleTextureBtn = document.getElementById('toggle-texture-btn');
     // Admin Login Elements
     const adminLogin = document.getElementById('admin-login');
     const adminPasswordInput = document.getElementById('admin-password-input');
@@ -68,6 +69,7 @@ document.addEventListener('DOMContentLoaded', () => {
         resetToStart();
         attachEvents();
         toggleMute();
+        applyInitialTextureState();
     }
 
     async function loadConfig() {
@@ -389,6 +391,22 @@ document.addEventListener('DOMContentLoaded', () => {
         winSound.muted = isMuted;
         try { localStorage.setItem('quiz_mute', String(isMuted)); } catch (e) {}
     }
+
+    function toggleTexture() {
+        document.body.classList.toggle('texture-active');
+        const isTextureActive = document.body.classList.contains('texture-active');
+        try { localStorage.setItem('quiz_texture_active', String(isTextureActive)); } catch (e) {}
+    }
+
+    function applyInitialTextureState() {
+        try {
+            const texturePref = localStorage.getItem('quiz_texture_active');
+            // Activar por defecto si no hay preferencia guardada, o si la preferencia es 'true'
+            if (texturePref === null || texturePref === 'true') {
+                document.body.classList.add('texture-active');
+            }
+        } catch (e) {}
+    }
     
     async function showInstructions() {
         leaderboardDisplay.classList.add('hidden'); // Ocultar leaderboard si está abierto
@@ -426,6 +444,7 @@ document.addEventListener('DOMContentLoaded', () => {
         leaderboardBtn.addEventListener('click', toggleLeaderboard);
         nextBtn.addEventListener('click', nextQuestionHandler);
         muteBtn.addEventListener('change', toggleMute);
+        toggleTextureBtn.addEventListener('click', toggleTexture);
         // Admin Login Events
         adminLoginBtn.addEventListener('click', handleAdminLogin);
         adminPasswordInput.addEventListener('keydown', (e) => {
