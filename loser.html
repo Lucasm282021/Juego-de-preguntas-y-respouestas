@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Has perdido</title>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    body { display:flex;align-items:center;justify-content:center;height:100vh;margin:0;padding:2rem;background:linear-gradient(120deg,#1a0b0b,#2a1414);color:#fff;font-family:var(--font-family-base); }
+    .card { max-width:900px;width:100%;padding:2.2rem;border-radius:12px;background:linear-gradient(135deg, rgba(26,11,11,0.95), rgba(42,20,20,0.95));box-shadow:0 8px 32px rgba(255,71,87,0.06); }
+    h1 { color:#ff4757; text-align:center; font-size:2.2rem }
+    #message { text-align:center; font-size:1.05rem; margin-bottom:0.6rem }
+    .summary { display:flex;gap:1rem;flex-wrap:wrap;justify-content:center;margin-bottom:1rem }
+    .summary .item { background:rgba(255,255,255,0.03);padding:1rem;border-radius:8px;min-width:140px;text-align:center }
+    .history { margin-top:1rem; max-height:48vh; overflow:auto;border-top:1px solid rgba(255,255,255,0.06); padding-top:1rem }
+    .q { padding:0.8rem;border-bottom:1px solid rgba(255,255,255,0.03) }
+    .q.correct { background: rgba(0,255,170,0.03) }
+    .q.wrong { background: rgba(255,71,87,0.03) }
+-    .btn { display:inline-block;padding:0.9rem 1.4rem;border-radius:10px;background:linear-gradient(90deg,#ff6b6b,#ff4757);color:#051018;font-weight:700;border:none;cursor:pointer;margin-top:1rem }
++
++    .btn { display:inline-block;padding:0.9rem 1.4rem;border-radius:10px;background:linear-gradient(90deg,#ff6b6b,#ff4757);color:#051018;font-weight:700;border:none;cursor:pointer;margin-top:1rem }
+    audio { display:none }
+  </style>
+</head>
+<body>
+  <main class="card">
+    <h1>¡Lo siento! Has perdido</h1>
+    <p id="message">No alcanzaste la meta. Puedes intentarlo de nuevo.</p>
+    <div class="summary">
+      <div class="item">Jugador: <div id="name" class="score-highlight"></div></div>
+      <div class="item">Puntuación: <div id="score" class="score-highlight"></div></div>
+      <div class="item">Tiempo: <div id="time" class="score-highlight"></div></div>
+      <div class="item">Aciertos: <div id="corrects" class="score-highlight"></div></div>
+      <div class="item">Errores: <div id="errors" class="score-highlight"></div></div>
+    </div>
+
+    <div class="history">
+      <h3>Historial de preguntas</h3>
+      <div id="history-list"></div>
+    </div>
+
+    <div style="text-align:center">
+      <button id="back-btn" class="btn">Volver a intentar</button>
+    </div>
+
+    <audio id="lose-audio" src="sound/error-170796.mp3" preload="auto"></audio>
+  </main>
+
+  <script>
+    (function(){
+      const resultRaw = localStorage.getItem('quiz_result');
+      if (!resultRaw) {
+        document.getElementById('message').textContent = 'No se encontró información del juego.';
+        return;
+      }
+      const res = JSON.parse(resultRaw);
+      document.getElementById('name').textContent = res.name || 'Jugador';
+      document.getElementById('score').textContent = res.score ?? 0;
+      document.getElementById('time').textContent = (res.totalTime != null) ? (res.totalTime + 's') : '-';
+      document.getElementById('corrects').textContent = res.correctAnswers ?? 0;
+      document.getElementById('errors').textContent = res.errors ?? 0;
+
+      const listEl = document.getElementById('history-list');
+      if (Array.isArray(res.history) && res.history.length) {
+        res.history.forEach((h, i) => {
+          const div = document.createElement('div');
+          div.className = 'q ' + (h.correct ? 'correct' : 'wrong');
+          div.innerHTML = `<strong>Q${i+1}:</strong> ${h.text} <br>
+            Tu respuesta: <em>${h.chosenText}</em> ${h.correct ? '<span style="color:var(--color-accent-primary)">✔</span>' : '<span style="color:var(--color-error)">✖</span>'} <br>
+            Respuesta correcta: <em>${h.correctText}</em> <br>
+            Tiempo: ${h.timeTaken}s ${h.usedDouble ? ' | Duplicador usado' : ''}
+          `;
+          listEl.appendChild(div);
+        });
+      } else {
+        listEl.innerHTML = '<p>No hay historial de preguntas.</p>';
+      }
+
+      const audio = document.getElementById('lose-audio');
+      try {
+        const mutePref = localStorage.getItem('quiz_mute');
+        if (mutePref === 'true') {
+          audio.muted = true;
+        }
+      } catch (e) {}
+      // Intentar reproducir sonido de error
+      audio.play().catch(() => {
+        const playBtn = document.createElement('button');
+        playBtn.className = 'btn';
+        playBtn.textContent = 'Reproducir sonido';
+        playBtn.addEventListener('click', () => audio.play());
+        document.querySelector('main').appendChild(playBtn);
+      });
+
+      document.getElementById('back-btn').addEventListener('click', () => {
+        try { localStorage.removeItem('quiz_result'); } catch (e) {}
+        window.location.href = 'index.html';
+      });
+    })();
+  </script>
+</body>
+  <style>
+    body { display:flex;align-items:center;justify-content:center;height:100vh;margin:0;padding:2rem;background:linear-gradient(120deg,#1a0b0b,#2a1414);color:#fff;font-family:var(--font-family-base); }
+    .card { max-width:900px;width:100%;padding:2.2rem;border-radius:12px;background:linear-gradient(135deg, rgba(26,11,11,0.95), rgba(42,20,20,0.95));box-shadow:0 8px 32px rgba(255,71,87,0.06); }
+    h1 { color:#ff4757; text-align:center; font-size:2.2rem }
+    #message { text-align:center; font-size:1.05rem; margin-bottom:0.6rem }
+    .summary { display:flex;gap:1rem;flex-wrap:wrap;justify-content:center;margin-bottom:1rem }
+    .summary .item { background:rgba(255,255,255,0.03);padding:1rem;border-radius:8px;min-width:140px;text-align:center }
+    .history { margin-top:1rem; max-height:48vh; overflow:auto;border-top:1px solid rgba(255,255,255,0.06); padding-top:1rem }
+    .q { padding:0.8rem;border-bottom:1px solid rgba(255,255,255,0.03) }
+    .q.correct { background: rgba(0,255,170,0.03) }
+    .q.wrong { background: rgba(255,71,87,0.03) }
+    .btn { display:inline-block;padding:0.9rem 1.4rem;border-radius:10px;background:linear-gradient(90deg,#ff6b6b,#ff4757);color:#051018;font-weight:700;border:none;cursor:pointer;margin-top:1rem }
+    audio { display:none }
+  </style>

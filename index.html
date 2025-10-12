@@ -12,6 +12,13 @@
         <!-- Pantalla de inicio -->
         <section id="start-screen" class="start-screen card">
             <h2 class="start-screen__title">PREGUNTADOS</h2>
+            <div class="mute-container">
+                <span class="mute-text">Sonido</span>
+                <label class="switch">
+                    <input type="checkbox" id="mute-btn" checked>
+                    <span class="slider round"></span>
+                </label>
+            </div>
             <div class="start-screen__actions">
                 <button id="start-btn" class="btn-primary">Jugar</button>
                 <button id="leaderboard-btn" class="btn-primary">Tabla de Jugadores</button>
@@ -29,6 +36,7 @@
             <div class="score-panel">
                 <div class="score-panel__item">Puntos: <span id="score" class="score-panel__value">0</span></div>
                 <div class="score-panel__item">Meta: <span id="target" class="score-panel__value">10</span></div>
+                <div class="score-panel__item">Errores: <span id="errors" class="score-panel__value">0</span></div>
                 <div class="score-panel__item">Pregunta: <span id="question-counter" class="score-panel__value">0/0</span></div>
             </div>
         </header>

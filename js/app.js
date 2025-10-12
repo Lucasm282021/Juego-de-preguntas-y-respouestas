@@ -19,19 +19,21 @@ document.addEventListener('DOMContentLoaded', () => {
     const eliminateCount = document.getElementById('eliminate-count');
     const timerFill = document.getElementById('timer-fill');
     const questionCounterSpan = document.getElementById('question-counter');
+    const errorsSpan = document.getElementById('errors');
     const timerSound = new Audio('sound/timer-ticks-314055.mp3');
     const errorSound = new Audio('sound/error-170796.mp3');
     const correctSound = new Audio('sound/sonido-correcto-331225.mp3');
-
+    const winSound = new Audio('sound/applause-cheer-236786.mp3');
+    const muteBtn = document.getElementById('mute-btn');
+    
     // Admin Login Elements
     const adminLogin = document.getElementById('admin-login');
     const adminPasswordInput = document.getElementById('admin-password-input');
     const adminLoginBtn = document.getElementById('admin-login-btn');
     const startScreenActions = document.querySelector('.start-screen__actions');
-
+    
     // Game State
-    const gameState = {
-        score: 0,
+    const gameState = {        score: 0,
         currentIndex: null,
         currentCorrectIndex: null,
         usedDoubleForThis: false,
@@ -44,6 +46,13 @@ document.addEventListener('DOMContentLoaded', () => {
         playerName: '',
         gameStartTime: 0,
         isGameOver: false,
+        history: [],
+        questionStartTime: 0,
+        usedLifelines: {
+            double: false,
+            switch: false,
+            eliminate: false,
+        }
     };
 
     let cfg = {};
@@ -53,6 +62,7 @@ document.addEventListener('DOMContentLoaded', () => {
         await loadConfig();
         resetToStart();
         attachEvents();
+        toggleMute();
     }
 
     async function loadConfig() {
@@ -94,15 +104,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
         scoreSpan.textContent = gameState.score;
         targetSpan.textContent = cfg.pointsToWin;
+        if (errorsSpan) errorsSpan.textContent = gameState.errorsCount;
         doubleCount.textContent = gameState.lifelines.double;
         switchCount.textContent = gameState.lifelines.switch;
         eliminateCount.textContent = gameState.lifelines.eliminate;
         if (questionCounterSpan) questionCounterSpan.textContent = `0/${cfg.maxQuestionsPerGame}`;
 
+    // reset history and lifeline usage
+    gameState.history = [];
+    gameState.questionStartTime = 0;
+    gameState.usedLifelines = { double: false, switch: false, eliminate: false };
+
         nextBtn.textContent = 'Siguiente';
         messageDiv.textContent = '';
         stopTimer();
         if (timerFill) timerFill.style.width = '100%';
+    // detener sonido de victoria si estaba sonando
+    try { winSound.pause(); winSound.currentTime = 0; } catch (e) {}
         gameScreen.classList.add('hidden');
         startScreen.classList.remove('hidden');
         nextBtn.classList.add('hidden');
@@ -144,6 +162,12 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function pickRandomQuestion() {
+        // Si no hay preguntas cargadas, evitar terminar el juego inmediatamente
+        if (!questions || questions.length === 0) {
+            alert('No se encontraron preguntas. Revisa que "defaultConfig.json" exista y tenga preguntas.');
+            resetToStart();
+            return;
+        }
         gameState.usedDoubleForThis = false;
         if (gameState.askedIndices.size >= questions.length || gameState.questionsAskedCount >= cfg.maxQuestionsPerGame) {
             endGame(false);
@@ -165,6 +189,9 @@ document.addEventListener('DOMContentLoaded', () => {
     function showQuestion(q) {
         qText.textContent = q.text;
         optionsDiv.innerHTML = '';
+
+        // marcar tiempo de inicio de la pregunta
+        gameState.questionStartTime = Date.now();
 
         const correctAnswerText = q.options[q.answer];
         const shuffledOptions = [...q.options].sort(() => Math.random() - 0.5);
@@ -188,6 +215,10 @@ document.addEventListener('DOMContentLoaded', () => {
         stopTimer();
         messageDiv.classList.remove('game__message--correct', 'game__message--wrong', 'game__message--timeout');
 
+        // tiempo tomado en segundos (con 1 decimal)
+        const timeTakenMs = Date.now() - (gameState.questionStartTime || Date.now());
+        const timeTaken = Math.round((timeTakenMs / 1000) * 10) / 10;
+
         if (chosen === gameState.currentCorrectIndex) {
             e.currentTarget.classList.add('question-card__option--correct');
             const earned = gameState.usedDoubleForThis ? cfg.pointsPerQuestion * 2 : cfg.pointsPerQuestion;
@@ -197,14 +228,39 @@ document.addEventListener('DOMContentLoaded', () => {
             gameState.correctAnswersCount++;
             messageDiv.classList.add('game__message--correct');
             correctSound.play();
+            // registrar en el historial
+            gameState.history.push({
+                id: q.id || gameState.currentIndex,
+                text: q.text,
+                chosenIndex: chosen,
+                chosenText: e.currentTarget.textContent,
+                correctIndex: q.answer,
+                correctText: q.options[q.answer],
+                correct: true,
+                timeTaken,
+                usedDouble: !!gameState.usedDoubleForThis
+            });
         } else {
             e.currentTarget.classList.add('question-card__option--wrong');
             const correctEl = Array.from(optionsDiv.children).find(ch => parseInt(ch.dataset.index, 10) === gameState.currentCorrectIndex);
             if (correctEl) correctEl.classList.add('question-card__option--correct');
             messageDiv.textContent = `Respuesta incorrecta. La respuesta correcta era: "${q.options[q.answer]}"`;
-            gameState.errorsCount++;
+                gameState.errorsCount++;
+                if (errorsSpan) errorsSpan.textContent = gameState.errorsCount;
             messageDiv.classList.add('game__message--wrong');
             errorSound.play();
+            // registrar en el historial
+            gameState.history.push({
+                id: q.id || gameState.currentIndex,
+                text: q.text,
+                chosenIndex: chosen,
+                chosenText: e.currentTarget.textContent,
+                correctIndex: q.answer,
+                correctText: q.options[q.answer],
+                correct: false,
+                timeTaken,
+                usedDouble: !!gameState.usedDoubleForThis
+            });
         }
 
         if (!checkWin()) {
@@ -230,19 +286,31 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function endGame(isWin = false, customMessage = '') {
         stopTimer();
+        // Guardar resultado detallado y redirigir a la página correspondiente
         const totalTime = Math.round((Date.now() - gameState.gameStartTime) / 1000);
-        saveScore({ name: gameState.playerName, score: gameState.score, time: totalTime });
-
-        let finalMessage = customMessage;
-        if (!finalMessage) {
-            finalMessage = isWin ? `¡Has ganado!` : `Fin del juego. No cumpliste el objetivo. Puntuación: ${gameState.score}.`;
+        const result = {
+            name: gameState.playerName,
+            score: gameState.score,
+            totalTime,
+            correctAnswers: gameState.correctAnswersCount,
+            errors: gameState.errorsCount,
+            lifelinesUsed: { ...gameState.usedLifelines },
+            history: gameState.history
+        };
+        try {
+            localStorage.setItem('quiz_result', JSON.stringify(result));
+        } catch (e) {
+            console.warn('No se pudo guardar el resultado en localStorage:', e);
         }
-
-        messageDiv.innerHTML = `${finalMessage}`;
-        Array.from(optionsDiv.children).forEach(ch => ch.style.pointerEvents = 'none');
-        gameState.isGameOver = true;
-        nextBtn.textContent = 'Jugar de Nuevo';
-        nextBtn.classList.remove('hidden');
+        if (isWin) {
+            window.location.href = 'win.html';
+            return;
+        } else {
+            // pérdida: redirigir a pantalla de derrota
+            window.location.href = 'loser.html';
+            return;
+        }
+        // Nota: código restante (mostrar mensaje, etc.) no se ejecutará porque redirigimos
     }
 
     function saveScore(playerData) {
@@ -301,11 +369,20 @@ document.addEventListener('DOMContentLoaded', () => {
         showQuestion(questions[idx]);
     }
 
+    function toggleMute() {
+        const isMuted = !muteBtn.checked;
+        timerSound.muted = isMuted;
+        errorSound.muted = isMuted;
+        correctSound.muted = isMuted;
+        winSound.muted = isMuted;
+        try { localStorage.setItem('quiz_mute', String(isMuted)); } catch (e) {}
+    }
+    
     function attachEvents() {
         startBtn.addEventListener('click', startGame);
         leaderboardBtn.addEventListener('click', toggleLeaderboard);
         nextBtn.addEventListener('click', nextQuestionHandler);
-
+        muteBtn.addEventListener('change', toggleMute);
         // Admin Login Events
         adminLoginBtn.addEventListener('click', handleAdminLogin);
         adminPasswordInput.addEventListener('keydown', (e) => {
@@ -325,6 +402,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 gameState.lifelines.double--;
                 doubleCount.textContent = gameState.lifelines.double;
                 gameState.usedDoubleForThis = true;
+                gameState.usedLifelines.double = true;
                 messageDiv.textContent = 'Duplicador activado para esta pregunta.';
                 if (gameState.lifelines.double <= 0) doubleBtn.classList.add('lifeline--disabled');
             }
@@ -334,6 +412,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (gameState.lifelines.switch > 0) {
                 gameState.lifelines.switch--;
                 switchCount.textContent = gameState.lifelines.switch;
+                gameState.usedLifelines.switch = true;
                 messageDiv.textContent = 'Pregunta cambiada.';
                 performSwitchQuestion();
                 if (gameState.lifelines.switch <= 0) switchBtn.classList.add('lifeline--disabled');
@@ -348,6 +427,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     toRemove.style.visibility = 'hidden';
                     gameState.lifelines.eliminate--;
                     eliminateCount.textContent = gameState.lifelines.eliminate;
+                    gameState.usedLifelines.eliminate = true;
                     messageDiv.textContent = 'Se eliminó una opción incorrecta.';
                     if (gameState.lifelines.eliminate <= 0) eliminateBtn.classList.add('lifeline--disabled');
                 }
@@ -384,9 +464,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function onTimeOut() {
         Array.from(optionsDiv.children).forEach(ch => ch.style.pointerEvents = 'none');
-        gameState.errorsCount++;
+            gameState.errorsCount++;
+            if (errorsSpan) errorsSpan.textContent = gameState.errorsCount;
         messageDiv.textContent = 'Tiempo agotado. Se marcó como fallo. 😟';
         messageDiv.classList.add('game__message--timeout');
+        errorSound.play();
         if (!checkWin()) {
             nextBtn.classList.remove('hidden');
         }

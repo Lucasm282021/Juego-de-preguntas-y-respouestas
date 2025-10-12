@@ -31,7 +31,7 @@ body{
   -webkit-font-smoothing:antialiased;
   -moz-osx-font-smoothing:grayscale;
   padding:2rem;
-  /*background-image: url('https://www.transparenttextures.com/patterns/stardust.png');*/
+  background-image: url('https://www.transparenttextures.com/patterns/stardust.png');
 }
 
 .container{
@@ -107,7 +107,7 @@ body{
 .game__message--wrong { font-weight: bold; color: var(--color-error); }
 .game__message--timeout { font-weight: bold; color: var(--color-warning); }
 
-label{display:block;margin-top:1rem;color:rgba(255,255,255,0.8)}
+label{display:block;margin-top:0;color:rgba(255,255,255,0.8)}
 input[type=number]{width:100px;margin-left:1rem;padding:0.5rem;border-radius:var(--radius-md);border:1px solid rgba(255,255,255,0.1);background:rgba(0,0,0,0.2);color:var(--color-text-light)}
 
 /* Admin page only */
@@ -157,6 +157,51 @@ input[type=number]{width:100px;margin-left:1rem;padding:0.5rem;border-radius:var
     background: rgba(0, 0, 0, 0.3);
     color: var(--color-text-light);
     font-size: 1.1rem;
+}
+
+/* Mute switch */
+.mute-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1rem;
+    gap: 1rem;
+}
+
+.mute-text {
+    color: var(--color-accent-primary);
+    font-size: var(--font-size-base);
+    font-weight: 600;
+    text-shadow: 0 0 8px rgba(0, 240, 255, 0.7);
+    line-height: 34px; /* Alinea verticalmente con el slider */
+}
+
+.switch { position: relative; display: inline-block; width: 60px; height: 34px; }
+.switch input { opacity: 0; width: 0; height: 0; }
+.slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ccc; transition: .4s; }
+.slider:before { position: absolute; content: ""; height: 26px; width: 26px; left: 4px; bottom: 4px; background-color: white; transition: .4s; }
+input:checked + .slider { background-color: var(--color-accent-primary); }
+input:focus + .slider { box-shadow: 0 0 1px var(--color-accent-primary); }
+input:checked + .slider:before { transform: translateX(26px); }
+.slider.round { border-radius: 34px; }
+.slider.round:before { border-radius: 50%; }
+
+.slider::after {
+    position: absolute;
+    content: "OFF";
+    color: white;
+    display: block;
+    font-size: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    right: 10px;
+    font-weight: bold;
+}
+
+input:checked + .slider::after {
+    content: "ON";
+    left: 10px;
+    right: auto;
 }
 
 /* Timer */

@@ -4,9 +4,9 @@
     "doubleStart": 1,
     "switchStart": 1,
     "eliminateStart": 1,
-    "timePerQuestion": 15,
+    "timePerQuestion": 20,
     "maxErrorsAllowed": 3,
-    "maxQuestionsPerGame": 5,
+    "maxQuestionsPerGame": 7,
     "questions": [
         {
             "id": 1,
