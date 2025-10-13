@@ -1,7 +1,7 @@
 // Llama a la función compartida para mostrar los resultados
 displayResults();
   
-(function(){
+(function() {
     const audio = document.getElementById('lose-audio');
     try {
       const mutePref = localStorage.getItem('quiz_mute');
@@ -11,7 +11,11 @@ displayResults();
     } catch (e) {}
     // Intentar reproducir sonido de error
     audio.play().catch(() => {
-      // No mostrar botón si falla, para mantener consistencia con la solución de recarga.
+      const playBtn = document.createElement('button');
+      playBtn.className = 'btn';
+      playBtn.textContent = 'Reproducir sonido';
+      playBtn.addEventListener('click', () => audio.play());
+      document.querySelector('main').appendChild(playBtn);
     });
 
     document.getElementById('back-btn').addEventListener('click', () => {

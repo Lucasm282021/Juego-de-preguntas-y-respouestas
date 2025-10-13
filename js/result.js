@@ -19,12 +19,10 @@ function displayResults() {
     // Mostrar comodines solo si existen en el resultado (página de victoria)
     const lifelinesEl = document.getElementById('lifelines');
     if (lifelinesEl && res.lifelinesUsed) {
-        const lifelineNames = { double: 'X2', switch: 'Cambio de pregunta', eliminate: '50:50' };
-        const usedLifelinesText = Object.keys(res.lifelinesUsed)
+        const usedLifelinesCount = Object.values(res.lifelinesUsed)
             .filter(key => res.lifelinesUsed[key])
-            .map(key => lifelineNames[key] || key)
-            .join(', ');
-        lifelinesEl.textContent = usedLifelinesText || 'Ninguno';
+            .length;
+        lifelinesEl.textContent = usedLifelinesCount;
     }
 
     const listEl = document.getElementById('history-list');
@@ -34,7 +32,9 @@ function displayResults() {
             div.className = 'q ' + (h.correct ? 'correct' : 'wrong');
             div.innerHTML = `<strong>Q${i+1}:</strong> ${h.text} <br>
               Tu respuesta: <em>${h.chosenText}</em> ${h.correct ? '<span style="color:var(--color-accent-primary)">✔</span>' : '<span style="color:var(--color-error)">✖</span>'} <br>
-              Respuesta correcta: <em>${h.correctText}</em>`;
+              Respuesta correcta: <em>${h.correctText}</em> <br>
+              Tiempo: ${h.timeTaken}s ${h.usedDouble ? ' | Duplicador usado' : ''}
+            `;
             listEl.appendChild(div);
         });
     }

@@ -7,29 +7,29 @@
   <title>¡Victoria!</title>
   <link rel="stylesheet" href="css/style.css">
   <link rel="icon" href="img/Logo-del-click-a-la-conciencia.png" type="image/png">
-  <link rel="stylesheet" href="css/win.css">
+  <link rel="stylesheet" href="css/result.css">
 </head>
 <body>
   <main class="card">
     <h1>¡Felicidades!</h1>
     <p id="message" style="text-align:center; font-size:1.1rem; margin-top:0.2rem"></p>
-    <div class="summary">
-      <div class="item">Jugador: <div id="name" class="score-highlight"></div></div>
-      <div class="item">Puntuación: <div id="score" class="score-highlight"></div></div>
-      <div class="item">Tiempo: <div id="time" class="score-highlight"></div></div>
-      <div class="item">Aciertos: <div id="corrects" class="score-highlight"></div></div>
-      <div class="item">Errores: <div id="errors" class="score-highlight"></div></div>
-      <div class="item">Comodines usados: <div id="lifelines" class="score-highlight"></div></div>
-    </div>
+    <dl class="summary">
+      <div class="item"><dt>Jugador:</dt> <dd id="name" class="score-highlight"></dd></div>
+      <div class="item"><dt>Puntuación:</dt> <dd id="score" class="score-highlight"></dd></div>
+      <div class="item"><dt>Tiempo:</dt> <dd id="time" class="score-highlight"></dd></div>
+      <div class="item"><dt>Aciertos:</dt> <dd id="corrects" class="score-highlight"></dd></div>
+      <div class="item"><dt>Errores:</dt> <dd id="errors" class="score-highlight"></dd></div>
+      <div class="item"><dt>Comodines usados:</dt> <dd id="lifelines" class="score-highlight"></dd></div>
+    </dl>
 
     <div class="history">
       <h3>Historial de preguntas</h3>
       <div id="history-list"></div>
     </div>
 
-    <div style="text-align:center">
+    <footer style="text-align:center">
       <button id="back-btn" class="btn">Volver al inicio</button>
-    </div>
+    </footer>
 
     <audio id="win-audio" src="sound/applause-cheer-236786.mp3" preload="auto"></audio>
   </main>

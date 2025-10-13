@@ -1,0 +1,72 @@
+/* Reglas comunes para páginas de resultado (win/loser) */
+body { display:flex;align-items:center;justify-content:center;height:100vh;margin:0;padding:2rem;background:var(--gradient-bg);color:var(--color-text-light);font-family:var(--font-family-base); }
+.card { max-width:1000px;width:100%;padding:2.5rem;border-radius:14px;background:var(--gradient-overlay);box-shadow:0 12px 48px var(--result-shadow, rgba(0,240,255,0.08)); }
+h1 {
+	text-align:center;
+	font-size:clamp(2.2rem, 5vw, 2.8rem);
+	margin-bottom:0.2rem;
+	color: var(--color-accent-primary);
+	text-shadow: 0 0 15px var(--color-shadow, rgba(0,240,255,0.5));
+}
+#message { font-size:1.1rem; margin-bottom:0.8rem; text-align:center }
+.summary { display:flex;gap:1rem;flex-wrap:wrap;justify-content:center;margin-bottom:1.2rem; margin-inline-start: 0; }
+.summary .item { background:rgba(255,255,255,0.03);padding:1.2rem 1.4rem;border-radius:10px;min-width:160px;text-align:center; font-size:1.05rem }
+.summary .item .score-highlight { font-size:1.4rem; margin-top:0.4rem; margin-inline-start: 0; }
+.history { margin-top:1rem; max-height:50vh; overflow:auto;border-top:1px solid rgba(255,255,255,0.06); padding-top:1rem }
+.history h3 { margin-top: 0; }
+.q { padding:1rem;border-bottom:1px solid rgba(255,255,255,0.03); font-size:1.05rem }
+.q.correct { background: rgba(0,255,170,0.03) }
+.q.wrong { background: rgba(255,71,87,0.03) }
+.btn { display:inline-block;padding:1rem 1.6rem;border-radius:12px;color:#051018;font-weight:800;border:none;cursor:pointer;margin-top:1rem;font-size:1.05rem }
+#back-btn { padding:1.1rem 2rem; font-size:1.1rem }
+audio { display:none }
+/* contenedor para confetti (solo usado en win) */
+.confetti-container { position:fixed;pointer-events:none;left:0;top:0;width:100%;height:0;overflow:visible;z-index:9999 }
+.confetti { position:fixed; width:10px; height:16px; opacity:0.9; transform-origin:center; will-change:transform,opacity; border-radius:2px; }
+@keyframes confetti-fall { 0% { transform: translateY(-10vh) rotate(0deg); opacity:1 } 100% { transform: translateY(120vh) rotate(720deg); opacity:0.85 } }
+@keyframes confetti-tilt { 0% { transform: translateY(0) rotate(0deg) } 50% { transform: translateY(10px) rotate(45deg) } 100% { transform: translateY(0) rotate(0deg) } }
+
+/* Botones usan colores de acento definidos por variables */
+.btn { background: linear-gradient(90deg, var(--color-accent-primary, #00f0ff), var(--color-accent-secondary, #ff3bff)); }
+
+/* Tema para pantalla de derrota: tonos rojos */
+body.result--lose {
+	/* Fondos y acentos más suaves para evitar saturación */
+	--gradient-bg: linear-gradient(120deg, #2b0a0a, #3e1212);
+	--gradient-overlay: linear-gradient(135deg, rgba(40,12,12,0.85), rgba(55,16,16,0.85));
+	--color-accent-primary: #ffb3b3;
+	--color-accent-secondary: #ff8a8a;
+	--color-text-light: #fff;
+	--color-error: #ff6b6b;
+	--result-shadow: rgba(255,90,90,0.06);
+}
+
+/* Ajustes visuales específicos para la tarjeta en modo derrota */
+body.result--lose .card {
+	border: 1px solid rgba(255,90,90,0.06);
+}
+
+/* Estilo específico para el H1 en la pantalla de derrota */
+body.result--lose h1 {
+	color: var(--color-error);
+	text-shadow: 0 0 15px rgba(255, 107, 107, 0.6); /* Sombra roja correspondiente a --color-error */
+}
+/* Responsive: ajustes para pantallas pequeñas */
+@media (max-width: 700px) {
+	.card { padding: 1.2rem; border-radius: 10px; }
+	h1 { font-size: 1.6rem; }
+	#message { font-size: 1rem; }
+	.summary { gap: 0.6rem; }
+	.summary .item { padding: 0.8rem; min-width: 120px; font-size: 0.95rem }
+	.summary .item .score-highlight { font-size: 1.1rem; }
+	.q { padding: 0.7rem; font-size: 0.95rem }
+	.history { max-height: 35vh }
+	.btn { padding: 0.8rem 1rem; font-size: 0.95rem }
+	#back-btn { padding: 0.8rem 1.2rem }
+}
+
+@media (max-width: 420px) {
+	.summary { flex-direction: column; align-items: stretch; }
+	.summary .item { width: 100%; }
+	.history { max-height: 30vh }
+}
