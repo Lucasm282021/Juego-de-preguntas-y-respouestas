@@ -460,8 +460,8 @@ document.addEventListener('DOMContentLoaded', () => {
     function applyInitialTextureState() {
         try {
             const texturePref = localStorage.getItem('quiz_texture_active');
-            // Activar por defecto si no hay preferencia guardada, o si la preferencia es 'true'
-            if (texturePref === null || texturePref === 'true') {
+            // Activar la textura solo si la preferencia guardada es explícitamente 'true'
+            if (texturePref === 'true') {
                 document.body.classList.add('texture-active');
             }
         } catch (e) {}
