@@ -3,7 +3,7 @@ body { display:flex;align-items:center;justify-content:center;height:100vh;margi
 .card { max-width:1000px;width:100%;padding:2.5rem;border-radius:14px;background:var(--gradient-overlay);box-shadow:0 12px 48px var(--result-shadow, rgba(0,240,255,0.08)); }
 h1 {
 	text-align:center;
-	font-size:clamp(2.2rem, 5vw, 2.8rem);
+	font-size:clamp(1.8rem, 6vw, 2.8rem);
 	margin-bottom:0.2rem;
 	color: var(--color-accent-primary);
 	text-shadow: 0 0 15px var(--color-shadow, rgba(0,240,255,0.5));
@@ -54,15 +54,14 @@ body.result--lose h1 {
 /* Responsive: ajustes para pantallas pequeñas */
 @media (max-width: 700px) {
 	.card { padding: 1.2rem; border-radius: 10px; }
-	h1 { font-size: 1.6rem; }
 	#message { font-size: 1rem; }
 	.summary { gap: 0.6rem; }
 	.summary .item { padding: 0.8rem; min-width: 120px; font-size: 0.95rem }
 	.summary .item .score-highlight { font-size: 1.1rem; }
 	.q { padding: 0.7rem; font-size: 0.95rem }
 	.history { max-height: 35vh }
-	.btn { padding: 0.8rem 1rem; font-size: 0.95rem }
-	#back-btn { padding: 0.8rem 1.2rem }
+	.btn { padding: 0.9rem 1.2rem; font-size: 1rem; }
+	#back-btn { width: 100%; }
 }
 
 @media (max-width: 420px) {

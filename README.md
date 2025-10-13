@@ -14,6 +14,8 @@ Este es un juego de preguntas y respuestas interactivo, desarrollado completamen
 - **Personalización de Interfaz:** Incluye opciones para silenciar el sonido y activar/desactivar una textura de fondo.
 - **Diseño Responsivo:** La interfaz se adapta a diferentes tamaños de pantalla.
 
+Nota rápida: durante el desarrollo se añadieron páginas de resultado (`win.html` y `loser.html`) que muestran un resumen detallado de la partida (nombre, puntos, respuestas acertadas/erradas, tiempo empleado y uso de comodines). Ambas páginas comparten estilos y lógica para la renderización de resultados.
+
 ---
 
 ## Estructura del Proyecto
@@ -26,17 +28,21 @@ Juego-de-preguntas-y-respouestas/
 │   └── index.html
 ├── css/
 │   ├── style.css
-│   └── win.css
+│   └── result.css        # estilos compartidos para win/loser pages
 ├── js/
 │   ├── app.js
-│   └── win.js
+│   ├── result.js         # lógica compartida para mostrar resultados
+│   ├── win.js            # comportamiento específico para la página de victoria (confetti, audio)
+│   └── loser.js          # comportamiento específico para la página de derrota (audio, temática)
+├── img/
+│   └── (archivos de imágenes)
 ├── sound/
 │   └── (archivos de audio)
 ├── defaultConfig.json
 ├── index.html
 ├── INSTRUCCIONES.txt
-├── loser.html
-└── win.html
+├── loser.html            # página de derrota (usa result.css + loser.js)
+└── win.html              # página de victoria (usa result.css + win.js)
 ```
 
 ---
@@ -81,18 +87,16 @@ Este es el cerebro del juego. Su lógica principal se puede dividir en las sigui
 
 ### HTML
 
-- **`index.html`**: Es la página principal. Contiene la pantalla de inicio (`#start-screen`), la pantalla del juego (`#game`) y el modal de instrucciones (`<dialog>`). La visibilidad de las secciones se controla con JavaScript añadiendo o quitando la clase `.hidden`.
-- **`win.html` / `loser.html`**: Páginas estáticas que muestran el resultado de la partida. Su contenido se rellena dinámicamente con JavaScript (`js/win.js` y un script inline en `loser.html`) leyendo el objeto `quiz_result` de `localStorage`.
+- **`index.html`**: La página principal. Contiene la pantalla de inicio (`#start-screen`), la del juego (`#game`) y el modal de instrucciones (`<dialog>`). La visibilidad se controla con JS.
+- **`win.html` / `loser.html`**: Páginas estáticas que muestran el resultado. Su contenido se rellena dinámicamente con JS (`js/result.js`, `js/win.js`, `js/loser.js`) leyendo el objeto `quiz_result` de `localStorage`.
 - **`admin/index.html`**: Contiene los formularios para que el administrador pueda cambiar la configuración del juego.
 
 ### CSS
 
 - **`css/style.css`**: Hoja de estilos principal.
     - Utiliza **variables CSS** (`:root`) para definir una paleta de colores y tamaños consistentes, facilitando la personalización del tema.
-    - Define el estilo de los componentes principales como `.card`, `.btn-primary`, etc.
-    - Incluye media queries para la **responsividad**, ajustando el layout en pantallas más pequeñas.
-- **`css/win.css`**: Estilos específicos para la pantalla de victoria.
-- **`loser.html` (estilos inline)**: Contiene sus propios estilos dentro de una etiqueta `<style>`, específicos para la pantalla de derrota.
+    - Incluye media queries para la **responsividad**.
+- **`css/result.css`**: Estilos compartidos por `win.html` y `loser.html`. La página de derrota (`loser.html`) tiene una clase `result--lose` en el `<body>` que aplica un tema de colores rojos definido en este mismo archivo.
 - **`admin/admin.css`**: Estilos dedicados exclusivamente al panel de administración.
 
 ---
@@ -103,6 +107,94 @@ Este es el cerebro del juego. Su lógica principal se puede dividir en las sigui
 2.  Haz clic en "Jugar" e introduce tu nombre.
 3.  Responde a las preguntas antes de que se acabe el tiempo.
 4.  Usa los comodines para ayudarte a ganar puntos o salir de un apuro.
+
+---
+
+## Cambios recientes (resumen importante)
+
+- Se agregó un contador de errores visible en la UI principal (`Errores`) que aumenta cuando el jugador responde incorrectamente o se agota el tiempo.
+- Se implementaron páginas dedicadas de resultado: `win.html` (victoria) y `loser.html` (derrota). Ambas páginas leen un objeto `quiz_result` desde `localStorage` para mostrar el resumen.
+- Reproductor de audio:
+    - En victoria se intenta reproducir `sound/applause-cheer-236786.mp3`.
+    - En derrota se intenta reproducir `sound/error-170796.mp3`.
+    - Si el navegador bloquea la reproducción automática, ambas páginas muestran un botón para reproducir el audio manualmente.
+- Efectos visuales: la página de victoria incluye una animación de confetti (CSS + JS) y estilos ampliados para destacar el resultado.
+- Registro de historial: durante la partida se guarda en memoria (y se incluye en `quiz_result`) el detalle por pregunta: texto de pregunta, opción elegida, si fue correcta, tiempo que tomó responder y si se usó el comodín "Duplicar" en esa pregunta.
+
+## Claves importantes en localStorage
+
+- `quiz_config`: configuración del juego (se inicializa desde `defaultConfig.json` si no existe).
+- `quiz_leaderboard`: array con los mejores resultados guardados por `saveScore()`.
+- `quiz_result`: objeto con el resumen de la última partida. Las páginas `win.html` y `loser.html` lo leen para renderizar la vista de resultados.
+- `quiz_mute`: booleano (`"true"`/`"false"`) que indica si el usuario silenció los sonidos en la UI.
+- `quiz_texture_active`: booleano que guarda la preferencia del usuario sobre la textura de fondo.
+- `quiz_recent_questions`: array con los IDs de las últimas preguntas mostradas para mejorar la aleatoriedad entre partidas.
+
+### Formato de `quiz_result`
+
+Ejemplo (JSON):
+
+{
+    "name": "Ana",
+    "score": 10,
+    "totalTime": 95,
+    "correctAnswers": 5,
+    "errors": 3,
+    "lifelinesUsed": {
+        "double": true,
+        "switch": false,
+        "eliminate": true
+    },
+    "history": [
+        {
+            "id": 5,
+            "text": "¿Cuál es la capital de Francia?",
+            "chosenIndex": 1,
+            "chosenText": "París",
+            "correctIndex": 1,
+            "correctText": "París",
+            "correct": true,
+            "timeTaken": 6.2,
+            "usedDouble": false
+        }
+    ]
+}
+
+## Probar localmente (recomendado)
+
+Por seguridad los navegadores restringen ciertas operaciones cuando se abre un archivo `file://` directamente (p. ej. fetch a `defaultConfig.json` y reproducción automática de audio). Para evitar problemas, sirve el proyecto con un servidor HTTP local.
+
+Usando Python 3 (desde la carpeta del proyecto):
+
+```powershell
+python -m http.server 8000
+```
+
+Luego abre en el navegador: http://localhost:8000
+
+Alternativas (Node.js):
+
+```powershell
+npx http-server -p 8000
+```
+
+## Notas sobre audio / Autoplay
+
+- Los navegadores pueden bloquear la reproducción automática de audio. Las páginas de resultado intentan reproducir el audio al cargar, pero muestran un botón de reproducción manual si el intento es bloqueado.
+- Si quieres desactivar todos los sonidos por defecto, en la UI principal pulsa el botón de silenciar; la preferencia se guarda en `quiz_mute`.
+
+## Depuración y comprobaciones rápidas
+
+- Asegúrate de que las rutas a los audios existen en `sound/` y que los nombres coinciden con los usados en el código.
+- Si `win.html` o `loser.html` muestran que `quiz_result` es `null` o vacío, probablemente se accedió a la página directamente sin jugar una partida; juega una partida completa para que `js/app.js` guarde el objeto antes de la redirección.
+- Para ver el contenido del `quiz_result` en tiempo real, abre las herramientas del navegador (DevTools) > Application (Almacenamiento) > Local Storage.
+
+## Sugerencias y mejoras futuras
+
+- Centralizar la lógica de reproducción de audio de las páginas de resultado para evitar código duplicado.
+- Añadir accesibilidad (roles ARIA y manejo de foco) en las páginas de resultado.
+- Exportar el historial de partida a JSON/CSV para análisis externo.
+
 
 ## Panel de Administración
 
