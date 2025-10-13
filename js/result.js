@@ -19,10 +19,17 @@ function displayResults() {
     // Mostrar comodines solo si existen en el resultado (página de victoria)
     const lifelinesEl = document.getElementById('lifelines');
     if (lifelinesEl && res.lifelinesUsed) {
-        const usedLifelinesCount = Object.values(res.lifelinesUsed)
+        const lifelineNames = {
+            double: 'X2',
+            switch: 'Cambiar',
+            eliminate: '50:50'
+        };
+
+        const usedLifelines = Object.keys(res.lifelinesUsed)
             .filter(key => res.lifelinesUsed[key])
-            .length;
-        lifelinesEl.textContent = usedLifelinesCount;
+            .map(key => lifelineNames[key] || key);
+
+        lifelinesEl.textContent = usedLifelines.length > 0 ? usedLifelines.join(', ') : 'Ninguno';
     }
 
     const listEl = document.getElementById('history-list');
